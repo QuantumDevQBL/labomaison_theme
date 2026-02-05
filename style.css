@@ -1,0 +1,32 @@
+/*
+ Theme Name:   Labomaison
+ Theme URI:    https://quantumdev.fr
+ Description:  Labomaison custom theme - Architecture CSS modulaire
+ Author:       QBL
+ Author URI:   https://quantumdev.fr
+ Template:     generatepress
+ Version:      1.0.0
+*/
+
+/* ============================================================
+   ARCHITECTURE CSS MODULAIRE
+   ============================================================
+
+   Les styles sont maintenant organisés dans css/_*.css :
+
+   - _base.css         : Variables CSS (couleurs, espacements, etc.)
+   - _layout.css       : Structure du site, footer, pagination
+   - _navigation.css   : Navigation desktop/mobile
+   - _cards.css        : Cartes articles, marques, related
+   - _badges.css       : Labels, terms, badges
+   - _grids.css        : Grilles, listings, related news
+   - _test-sections.css: Sections test (pros/cons, TOC, notes)
+   - _plugins.css      : WP Grid Builder, Affilizz, Glightbox
+   - _media-queries.css: Responsive consolidé
+
+   Point d'entrée : css/style-refactored.css
+   Toggle : USE_REFACTORED_CSS dans functions.php
+
+   Migration: 2026-02-04
+   ============================================================ */
+

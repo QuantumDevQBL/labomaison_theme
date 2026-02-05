@@ -1,0 +1,269 @@
+/* ====================================
+   NAVIGATION / HEADER
+   Desktop & Mobile navigation, menus, search
+
+   Source: style.css comprehensive migration
+   Generated: 2026-02-04
+
+   DUPLICATES RESOLVED:
+   - .wp-block-search__button: L909-918 + L1793-1798 → merged
+   ==================================== */
+
+/* ========================================
+   SEARCH BUTTON (Gutenberg Block)
+   Merged: L909-918 + L1793-1798
+   ======================================== */
+
+.wp-block-search__button.has-small-font-size.has-icon.wp-element-button {
+  display: flex;
+  justify-content: center;
+  border-radius: var(--radius-xl, 8px);
+  background-color: var(--color-gray-200, #f3f3f3);
+}
+
+.wp-block-search__button svg {
+  fill: var(--color-text-dark, #252525);
+  /* Source: L916-918, L1835-1837 */
+}
+
+/* ========================================
+   NAVIGATION LINKS (Animated Underline)
+   Source: L1753-1783
+   ======================================== */
+
+.wp-block-navigation-item__content {
+  position: relative;
+  color: var(--color-primary, #343a40);
+  text-decoration: none;
+}
+
+.wp-block-navigation-item__content::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 3px;
+  bottom: 0;
+  left: 0;
+  background-color: var(--color-primary, #343a40);
+  transition: width var(--transition-bounce, 0.3s ease-in-out);
+}
+
+.wp-block-navigation-item__content:hover::after,
+.wp-block-navigation-item__content:focus::after {
+  width: 100%;
+}
+
+/* Navigation item text color override */
+.wp-block-navigation .wp-block-navigation-item__content.wp-block-navigation-item__content {
+  color: var(--color-text-darkest, #202020);
+  /* Source: L2697-2699 */
+}
+
+/* ========================================
+   NAVIGATION CONTAINER
+   Source: L1786-1841, L2493-2509
+   ======================================== */
+
+.navigation_block {
+  display: flex;
+  justify-content: end;
+  gap: var(--gap-nav, 30px);
+  font-size: var(--text-4xl, 1.3rem);
+  /* Source: L1786-1791 */
+}
+
+/* Sticky logo visibility */
+.main-navigation .sticky-navigation-logo,
+.main-navigation.has-sticky-branding:not(.has-branding):not(.navigation-stick) .navigation-branding {
+  display: block !important;
+  /* Source: L1800-1803 */
+}
+
+/* Navigation inner container */
+.inside-navigation.grid-container {
+  justify-content: flex-start;
+  padding-left: var(--padding-nav, 40px) !important;
+  padding-right: var(--padding-nav, 40px) !important;
+  max-width: var(--max-width-nav, 1240px);
+  /* Source: L1805-1809, L1839-1841 */
+}
+
+.inside-navigation.grid-container img {
+  height: var(--nav-logo-height, 50px);
+  /* Source: L1818-1820 */
+}
+
+/* Menu bar items */
+.menu-bar-items {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  /* Source: L1822-1826 */
+}
+
+.menu-bar-item a {
+  padding-right: 0;
+  display: flex;
+  /* Source: L2477-2480 */
+}
+
+/* Navigation branding */
+.navigation-branding {
+  display: flex;
+  align-items: center;
+  order: 0;
+  margin-right: var(--space-sm, 10px);
+  /* Source: L1828-1833 */
+}
+
+/* ========================================
+   RED MENU ITEM (Promotional)
+   Source: L2708-2714
+   ======================================== */
+
+.red_item_menu strong {
+  color: var(--color-red-menu, red);
+}
+
+.red_item_menu .wp-block-navigation-item__content::after {
+  background-color: var(--color-red-menu, red);
+}
+
+/* ========================================
+   NAVIGATION MODAL (Search)
+   Source: L817-821
+   ======================================== */
+
+.navigation_container #modal-2-content {
+  display: flex;
+  align-items: end;
+}
+
+/* ========================================
+   MOBILE NAVIGATION (≤ 1024px)
+   Source: L2631-2677
+   ======================================== */
+
+@media (max-width: 1024px) {
+  /* Logo visibility on mobile */
+  .sticky-navigation-logo,
+  .navigation-branding {
+    display: block !important;
+    /* Source: L2633-2636 */
+  }
+
+  /* Menu toggle positioning */
+  .main-navigation.has-sticky-branding.navigation-stick .menu-toggle {
+    flex-grow: 0;
+    padding-right: var(--space-md, 20px);
+    order: 2;
+    /* Source: L2638-2642 */
+  }
+
+  /* Inside navigation alignment */
+  .main-navigation .inside-navigation {
+    justify-content: flex-start !important;
+    /* Source: L2644-2646 */
+  }
+
+  /* Branding order */
+  .navigation-branding {
+    order: 0 !important;
+    /* Source: L2648-2650 */
+  }
+
+  /* Menu toggle button */
+  .has-menu-bar-items button.menu-toggle {
+    flex-grow: 0 !important;
+    padding-right: var(--space-md, 20px);
+    order: 2 !important;
+    /* Source: L2652-2656 */
+  }
+
+  /* Logo image sizing */
+  .navigation-branding img,
+  .site-logo.mobile-header-logo img {
+    height: var(--nav-logo-height, 50px);
+    /* Source: L2658-2661 */
+  }
+
+  /* Show menu toggle */
+  .menu-toggle {
+    display: flex !important;
+    /* Source: L2663-2665 */
+  }
+
+  /* Menu bar item styling */
+  .menu-bar-item a {
+    padding-right: 0 !important;
+    display: flex !important;
+    /* Source: L2667-2670 */
+  }
+
+  /* Hide mobile menu text */
+  .mobile-menu {
+    display: none;
+    /* Source: L2672-2674 */
+  }
+}
+
+/* ========================================
+   MOBILE NAVIGATION (≤ 768px)
+   Source: L1811-1816
+   ======================================== */
+
+@media (max-width: 768px) {
+  .inside-navigation.grid-container {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+    /* Source: L1811-1815 */
+  }
+
+  .menu-toggle {
+    display: flex !important;
+    /* Source: combined with 1024px rule */
+  }
+}
+
+/* ========================================
+   MENU TOGGLE TEXT HIDE
+   Source: L3123-3127
+   ======================================== */
+
+.menu-toggle .gp-icon + .mobile-menu {
+  padding-left: 9px;
+  display: none;
+  /* Source: L3124-3127 */
+}
+
+/* ========================================
+   SOCIAL ICONS (Footer)
+   Source: L506-509, L3141-3156
+   ======================================== */
+
+.social_icons_container {
+  margin-left: 0 !important;
+  margin-top: 7px;
+  /* Source: L506-509 */
+}
+
+.site-footer .gp-button {
+  width: 14px !important;
+  /* Source: L3141-3143 */
+}
+
+.social_icons_container .gb-button {
+  width: 14px !important;
+  /* Source: L3145-3147 */
+}
+
+.social_icons_container .gb-button .gb-icon {
+  width: 14px !important;
+  /* Source: L3149-3151 */
+}
+
+.social_icons_container .gb-button #icons {
+  width: 14px;
+  height: 14px;
+  /* Source: L3153-3156 */
+}

@@ -1,0 +1,523 @@
+/* ====================================
+   PLUGINS
+   WP Grid Builder, Affilizz, Rank Math, Glightbox, etc.
+
+   Source: style.css comprehensive migration
+   Generated: 2026-02-04
+
+   SECTIONS:
+   - WP Grid Builder (Facets & Cards)
+   - WP Grid Builder (Filters Panel)
+   - Affilizz / Rndzz
+   - Glightbox
+   - Rank Math Breadcrumb
+   ==================================== */
+
+/* ========================================
+   WP GRID BUILDER – FACETS
+   Source: L805-811, L1598-1601, L2362-2365, L3187-3189
+   ======================================== */
+
+.wpgb-facet h4 {
+  display: none;
+  /* Source: L805-807 */
+}
+
+.wpgb-facet .wpgb-apply,
+.wpgb-facet .wpgb-number-submit {
+  background-color: var(--color-primary-alt, #2b2e34) !important;
+  padding: var(--space-sm, 10px) var(--space-lg, 20px) !important;
+  border-radius: var(--radius-xl, 8px) !important;
+  /* Source: L810-815 */
+}
+
+.wpgb-facet.wpgb-facet-25 li span {
+  font-size: 0.9rem;
+  padding: 0;
+  /* Source: L1598-1601 */
+}
+
+.wpgb-facet.wpgb-facet-14 {
+  display: flex;
+  justify-content: center;
+  margin-top: var(--space-lg, 20px);
+  /* Source: L2362-2365 */
+}
+
+.wpgb-facet.hide-facette {
+  display: none !important;
+  /* Source: L3187-3189 */
+}
+
+.wpgb-facet fieldset {
+  margin: 0 !important;
+  /* Source: L3444-3446 */
+}
+
+.wpgb-facet .wpgb-range-facet .wpgb-range-slider {
+  margin-bottom: var(--space-xs, 5px) !important;
+  /* Source: L3448-3450 */
+}
+
+/* ========================================
+   WP GRID BUILDER – CARDS
+   Source: L881-896, L2213-2226, L3519-3522
+   ======================================== */
+
+/* Grid 19 card inner */
+.wpgb-grid-19 .wpgb-card .wpgb-card-inner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%;
+  gap: var(--gap-lg, 20px);
+  /* Source: L881-893 */
+}
+
+/* Card 46 styling */
+.wp-grid-builder .wpgb-card-46 .wpgb-card-body,
+.wp-grid-builder .wpgb-card-46 .wpgb-card-media {
+  border-radius: var(--radius-xl, 8px);
+  /* Source: L895-897 */
+}
+
+/* Card 30 styling */
+.wp-grid-builder .wpgb-card-30 .wpgb-block-6 {
+  margin-right: 4.1rem;
+  margin-left: 4.1rem;
+  /* Source: L2213-2216 */
+}
+
+.wp-grid-builder .wpgb-card-30 .wpgb-card-body {
+  padding: 0 var(--space-lg, 20px) var(--space-sm, 10px) var(--space-lg, 20px);
+  display: flex !important;
+  flex-direction: column !important;
+  justify-content: space-between !important;
+  /* Source: L2218-2224 */
+}
+
+.wp-grid-builder .wpgb-card [class*="wpgb-block-"] {
+  font-size: 0.9rem !important;
+  /* Source: L2225-2227 */
+}
+
+/* CLS fix for card inner */
+.wpgb-card-inner {
+  position: relative;
+  padding-top: 32px;
+  /* Source: L3519-3522 */
+}
+
+/* ========================================
+   WP GRID BUILDER – FILTERS PANEL
+   Source: L3193-3484
+   ======================================== */
+
+.filters-panel {
+  display: none;
+  background: var(--color-white, #fff);
+  z-index: var(--z-modal, 999);
+  padding: var(--space-lg, 20px);
+  transition: var(--transition-all, all 0.3s ease);
+  /* Source: L3193-3199 */
+}
+
+.filters-panel.open {
+  display: flex;
+  /* Source: L3201-3203 */
+}
+
+/* Desktop filters panel */
+@media (min-width: 768px) {
+  .filters-panel.open {
+    flex-wrap: wrap;
+    gap: var(--gap-lg, 20px);
+    max-width: 1200px;
+    margin: var(--space-lg, 20px) auto 0;
+    border: 1px solid var(--color-border, #ccc);
+    border-radius: var(--radius-xl, 8px);
+    justify-content: flex-start;
+    /* Source: L3207-3216 */
+  }
+
+  .facet-block {
+    width: calc(25% - 20px);
+    min-width: 220px;
+    /* Source: L3218-3221 */
+  }
+
+  .facet-block.actions-row {
+    flex: 1 1 100%;
+    justify-content: center;
+    width: 100%;
+    /* Source: L3223-3227 */
+  }
+
+  .filters-panel.open {
+    max-width: 100% !important;
+    /* Source: L3387-3390 */
+  }
+}
+
+/* Mobile filters panel */
+@media (max-width: 767px) {
+  .filters-panel {
+    position: fixed;
+    top: 0;
+    left: 100%;
+    width: 100vw;
+    height: 100vh;
+    overflow-y: auto;
+    transition: left 0.3s ease;
+    padding: 40px var(--space-lg, 20px);
+    flex-direction: column;
+    gap: var(--gap-lg, 20px);
+    /* Source: L3233-3246 */
+  }
+
+  .filters-panel.open {
+    left: 0;
+    display: flex;
+    justify-content: center;
+    /* Source: L3248-3252 */
+  }
+}
+
+/* Facet block base */
+.facet-block {
+  background-color: var(--color-white, #fff);
+  border: none;
+  border-radius: 0;
+  padding: 0 var(--space-xs, 5px);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  height: fit-content;
+  /* Source: L3255-3265 */
+}
+
+.facet-block .range_title {
+  font-size: 0.8rem;
+  /* Source: L3267-3269 */
+}
+
+.facet-block.actions-row {
+  flex: 1 1 100%;
+  display: flex;
+  flex-direction: revert;
+  align-items: center;
+  gap: var(--gap-sm, 12px);
+  padding-top: var(--space-lg, 20px);
+  justify-content: center;
+  /* Source: L3366-3374 */
+}
+
+.facet-block.actions-row .close-filters-button,
+.facet-block.actions-row .wpgb-reset button {
+  flex: 1;
+  max-width: 300px;
+  /* Source: L3376-3380 */
+}
+
+.facet-block.actions-row .wpgb-facet {
+  width: 50%;
+  /* Source: L3435-3437 */
+}
+
+/* Brand facet full width */
+.facet-block.brand_facet {
+  width: 100%;
+  /* Source: L3382-3385 */
+}
+
+/* Filter buttons */
+.toggle-filters-button,
+.close-filters-button,
+.facet-block .wpgb-reset button {
+  background-color: var(--color-link, #0366d6);
+  color: var(--color-white, white);
+  border: none;
+  padding: var(--space-sm, 12px);
+  border-radius: var(--radius-md, 6px);
+  font-size: 1rem;
+  font-weight: var(--font-semibold, 600);
+  cursor: pointer;
+  transition: background 0.2s ease-in-out;
+  width: 100%;
+  text-align: center;
+  /* Source: L3318-3332 */
+}
+
+.toggle-filters-button:hover,
+.close-filters-button:hover,
+.facet-block .wpgb-reset button:hover {
+  background-color: var(--color-link-hover, #024c9b);
+  /* Source: L3334-3338 */
+}
+
+/* Range slider styling */
+.facet-block .wpgb-range-slider {
+  height: 6px;
+  background: var(--color-gray-300, #ddd);
+  border-radius: var(--radius-sm, 4px);
+  margin-top: var(--space-xs, 8px);
+  /* Source: L3295-3300 */
+}
+
+.facet-block .wpgb-range-thumb {
+  width: 16px;
+  height: 16px;
+  background: var(--color-link, #0366d6);
+  border-radius: 50%;
+  border: 2px solid var(--color-white, white);
+  top: -6px;
+  /* Source: L3302-3309 */
+}
+
+.facet-block .wpgb-range-values {
+  margin-top: 0;
+  font-size: 0.85rem;
+  font-weight: var(--font-semibold, 600);
+  color: var(--color-gray-600, #444);
+  /* Source: L3311-3316 */
+}
+
+/* Button facet tags */
+.facet-block .wpgb-button-facet ul.wpgb-inline-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-xs, 8px);
+  padding: 0;
+  margin-top: var(--space-sm, 10px);
+  list-style: none;
+  /* Source: L3341-3348 */
+}
+
+.facet-block .wpgb-button {
+  background: var(--color-gray-100, #eee);
+  border-radius: var(--radius-md, 6px);
+  padding: 6px var(--space-sm, 12px);
+  border: 1px solid var(--color-border, #ccc);
+  font-weight: var(--font-semibold, 600);
+  transition: background 0.2s ease;
+  cursor: pointer;
+  /* Source: L3350-3358 */
+}
+
+.facet-block .wpgb-button[aria-pressed="true"] {
+  background: var(--color-primary, #343a40);
+  color: var(--color-white, #fff);
+  border-color: var(--color-primary, #343a40);
+  /* Source: L3360-3364 */
+}
+
+/* Filters content wrapper */
+.filters-content {
+  width: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-sm, 10px);
+  /* Source: L3439-3443 */
+}
+
+.filters-panel .wpgb-button.wpgb-reset {
+  margin: 0;
+  width: 100%;
+  /* Source: L3430-3433 */
+}
+
+/* Mobile filter adjustments */
+@media (max-width: 768px) {
+  .toggle-filters-button,
+  .close-filters-button,
+  .facet-block .wpgb-reset button {
+    padding: 0 var(--space-xs, 5px);
+    font-size: 0.8rem;
+    /* Source: L3455-3468 */
+  }
+
+  .facet-block .wpgb-reset button {
+    padding: var(--space-xs, 5px);
+    font-size: 0.8rem;
+    /* Source: L3465-3469 */
+  }
+
+  .wpgb-facet button.wpgb-apply,
+  .wpgb-facet button.wpgb-reset {
+    font-size: 0.8rem !important;
+    font-weight: var(--font-bold, 700) !important;
+    padding: 4px var(--space-xs, 5px) !important;
+    /* Source: L3470-3475 */
+  }
+
+  .wpgb-facet .wpgb-inline-list li {
+    margin: 0 !important;
+    /* Source: L3477-3479 */
+  }
+
+  .wpgb-button-label {
+    font-size: 12px !important;
+    /* Source: L3481-3483 */
+  }
+}
+
+/* ========================================
+   AFFILIZZ / RNDZZ
+   Source: L2439-2456, L3131-3139, L3534-3581
+   ======================================== */
+
+/* Base container sizing */
+.wp-block-affilizz-publication,
+.affilizz-rendering-container {
+  display: block;
+  min-height: 480px;
+  /* Source: L2440-2444 */
+}
+
+/* Mobile adjustment */
+@media (max-width: 600px) {
+  .wp-block-affilizz-publication,
+  .affilizz-rendering-container {
+    min-height: 550px;
+    /* Source: L2447-2453 */
+  }
+}
+
+/* Card 44 Affilizz container */
+.wpgb-card-44 .affilizz-container {
+  justify-content: center;
+  /* Source: L3131-3133 */
+}
+
+.affilizz-container {
+  height: 28px;
+  display: flex;
+  /* Source: L3136-3139 */
+}
+
+/* Skeleton state */
+.wp-block-affilizz-publication.affilizz-skeleton {
+  background-color: var(--color-gray-100, #f8f8f8);
+  /* Source: L3535-3537 */
+}
+
+/* CLS Fix - disable transitions */
+.affilizz-offer-list-wrapper,
+.rndzz-offer-list-wrapper {
+  transition: none !important;
+  -webkit-transition: none !important;
+  -moz-transition: none !important;
+  -o-transition: none !important;
+  height: auto !important;
+  /* Source: L3545-3559 */
+}
+
+/* Box layout space reservation */
+.rndzz-box-layout,
+.affilizz-box-layout {
+  min-height: 700px;
+  /* Source: L3569-3573 */
+}
+
+@media (max-width: 768px) {
+  .rndzz-box-layout,
+  .affilizz-box-layout {
+    min-height: 650px;
+    /* Source: L3577-3581 */
+  }
+}
+
+/* ========================================
+   GLIGHTBOX
+   Source: L2489-2524, L2579-2586, L2622-2624
+   ======================================== */
+
+.glightbox-container {
+  background: none !important;
+  padding: 0 !important;
+  /* Source: L2490-2494 */
+}
+
+.glightbox-container .ginner-container {
+  width: auto !important;
+  max-width: 100% !important;
+  max-height: 100vh;
+  /* Source: L2497-2503 */
+}
+
+/* Gslide content */
+.gslider .gslide {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto !important;
+  /* Source: L2506-2514 */
+}
+
+.gslide-media img {
+  max-width: 100%;
+  height: auto;
+  box-shadow: none !important;
+  /* Source: L2517-2524 */
+}
+
+/* Mobile lightbox */
+@media (max-width: 767px) {
+  .glightbox-container {
+    background: none !important;
+    height: 450px;
+    top: 50%;
+    transform: translateY(-50%);
+    /* Source: L2579-2586 */
+  }
+}
+
+.glightbox-mobile .goverlay {
+  background: transparent;
+  /* Source: L2622-2624 */
+}
+
+/* ========================================
+   RANK MATH BREADCRUMB
+   Source: L3757-3800
+   ======================================== */
+
+.rank-math-breadcrumb p {
+  font-size: 13px;
+  margin-bottom: 0;
+  /* Source: L3758-3761 */
+}
+
+.rank-math-breadcrumb a {
+  color: var(--contrast-3);
+  /* Source: L3763-3765 */
+}
+
+/* Mobile breadcrumb - ellipsis */
+@media (max-width: 768px) {
+  .rank-math-breadcrumb,
+  .rank-math-breadcrumb p {
+    margin: 0;
+    /* Source: L3776-3779 */
+  }
+
+  .rank-math-breadcrumb p {
+    display: block;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    /* Source: L3781-3789 */
+  }
+
+  .rank-math-breadcrumb .separator {
+    white-space: nowrap;
+    /* Source: L3792-3795 */
+  }
+
+  .rank-math-breadcrumb a {
+    white-space: nowrap;
+    /* Source: L3797-3800 */
+  }
+}
+

@@ -1,0 +1,96 @@
+############################################
+# Dépendances / Node
+############################################
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+.npm/
+.pnpm-store/
+.cache/
+.parcel-cache/
+.eslintcache
+
+############################################
+# Builds / Artefacts
+############################################
+dist/
+build/
+coverage/
+.tmp/
+temp/
+
+############################################
+# Logs
+############################################
+logs/
+*.log
+
+############################################
+# OS files
+############################################
+.DS_Store
+.DS_Store?
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+
+############################################
+# IDE / Editor
+############################################
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+############################################
+# Git / tooling local
+############################################
+.claude/
+.env
+.env.*
+!.env.example
+
+############################################
+# Backups / fichiers générés à la main
+# (important dans ton repo : functions.php.backup, functions.php.new, style.css.backup-*)
+############################################
+*.backup
+*.bak
+*.old
+*.orig
+*.new
+*~
+*.swp
+*.swo
+*.tmp
+
+############################################
+# WordPress (si repo = thème dans wp-content/themes)
+# Note: on n’ignore PAS tes fichiers du thème.
+############################################
+wp-config.php
+.htaccess
+wp-content/uploads/
+wp-content/cache/
+wp-content/upgrade/
+wp-content/backups/
+wp-content/backup-db/
+wp-content/ai1wm-backups/
+wp-content/wflogs/
+wp-content/debug.log
+
+############################################
+# PHP / Composer (au cas où)
+############################################
+vendor/
+composer.lock
+
+############################################
+# Secrets / certificats
+############################################
+*.key
+*.pem
+*.p12
+*.pfx

@@ -1,0 +1,32 @@
+/*
+ Theme Name:   Labomaison (Refactored scaffold)
+ Description:  Feuille d’import modulaire – NE PAS activer en prod tant que non finalisée.
+ Version:      0.0.1
+
+ NOTE :
+ - Ce fichier n’est pas encore chargé par WordPress.
+ - Il servira d’agrégateur pour les fichiers /css/_*.css.
+ - Le contenu d’import sera ajouté dans une phase ultérieure.
+*/
+
+/* Base */
+@import './_base.css';
+
+/* Layout */
+@import './_layout.css';
+@import './_navigation.css';
+
+/* Components */
+@import './_cards.css';
+@import './_badges.css';
+@import './_grids.css';
+@import './_test-sections.css';
+
+/* Plugins */
+@import './_plugins.css';
+
+/* Media Queries (en dernier pour override) */
+@import './_media-queries.css';
+
+/* Legacy (temporaire - à supprimer progressivement) */
+@import './_legacy-temp.css';

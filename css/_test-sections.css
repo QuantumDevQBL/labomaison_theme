@@ -1,0 +1,607 @@
+/* ====================================
+   TEST / PRODUCT SECTIONS
+   Pros/cons, fiches techniques, notes,
+   conclusions, TOC, shortcode containers
+
+   Source: style.css comprehensive migration
+   Generated: 2026-02-04
+
+   DUPLICATES RESOLVED:
+   - Section containers: L1547-1564 + L1731-1748 → merged (mobile override)
+   - .notes-produit: L2094-2097 + L2123-2126 → merged
+   - .gb-headline-shortcode: L3047-3064 + L3089-3091 → merged
+   ==================================== */
+
+/* ========================================
+   SECTION CONTAINERS BASE
+   Source: L1547-1564
+   ======================================== */
+
+.toc-desktop,
+.pros-cons-container_shortcode,
+.faq-section,
+.presentation-section,
+.contenu-section,
+.chapeau-content,
+.notes-produit,
+.caracteristiques_container,
+.conclusion-section {
+  width: 100%;
+  max-width: 1000px;
+  padding: var(--space-lg, 20px);
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: var(--radius-md, 6px);
+  border: 0 solid;
+  background-color: var(--color-gray-200, #f3f3f3);
+  /* Source: L1547-1564 */
+}
+
+/* Shortcode container heading */
+.shortcode_container h1 {
+  font-size: 25px;
+  margin-bottom: 0;
+  /* Source: L2264-2267 */
+}
+
+/* Where to buy container (grouping with section containers) */
+.ou_acheter_container {
+  width: 100%;
+  max-width: 1000px;
+  padding: var(--space-lg, 20px);
+  margin-right: auto;
+  margin-left: auto;
+  border-radius: var(--radius-md, 6px);
+  border: 0 solid;
+  background-color: var(--color-gray-200, #f3f3f3);
+  /* Source: L1731 (in mobile context) */
+}
+
+/* ========================================
+   SECTION TYPOGRAPHY
+   Source: L1566-1595
+   ======================================== */
+
+.pros-cons-container_shortcode p,
+.faq-section p,
+.notes-produit p,
+.caracteristiques_container p,
+.conclusion-section p,
+.chapeau-content p {
+  margin-bottom: 0;
+  /* Source: L1566-1574 */
+}
+
+.chapeau-content p {
+  font-weight: var(--font-bold, 700);
+  /* Source: L1576-1579 */
+}
+
+/* Title container layout */
+.title_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  /* Source: L1581-1585 */
+}
+
+/* Section headings */
+.toc-desktop h2,
+.presentation-section h2,
+.contenu-section h2,
+.contenu-section h3,
+.notes-produit h2,
+.caracteristiques_container h2,
+.title_container h2 {
+  font-weight: var(--font-black, 900);
+  /* Source: L1587-1595 */
+}
+
+/* ========================================
+   PROS / CONS COMPONENT
+   Source: L513-532, L706-792
+   ======================================== */
+
+/* Legacy pro_cons container */
+.pro_cons_container ul {
+  width: 80%;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  align-items: flex-start;
+  padding-left: var(--space-sm, 10px);
+  padding-right: var(--space-sm, 10px);
+  /* Source: L513-522 */
+}
+
+.pro_cons_container li {
+  padding-left: 0;
+  width: fit-content;
+  /* Source: L524-527 */
+}
+
+.pro_cons_container p {
+  display: none;
+  /* Source: L530-532 */
+}
+
+/* Shortcode pros/cons container */
+.pros-cons-container_shortcode {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-lg, 20px);
+  justify-content: space-around;
+  /* Source: L706-711 */
+}
+
+/* Square box (pros/cons item) */
+.pros-cons-container_shortcode .square-box {
+  position: relative;
+  width: calc(50% - 20px);
+  padding: 15px;
+  border-radius: var(--radius-md, 6px);
+  overflow: hidden;
+  min-height: 100px;
+  background-color: var(--color-gray-200, #f3f3f3);
+  box-shadow: var(--shadow-sm, 0 2px 5px rgba(0, 0, 0, 0.1));
+  background: var(--color-white, #fff);
+  /* Source: L714-730 */
+}
+
+.pros-cons-container_shortcode .square-box ul {
+  margin: 0;
+  /* Source: L732-734 */
+}
+
+.pros-cons-container_shortcode .square-box .content {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  align-items: baseline;
+  padding: var(--space-sm, 10px);
+  /* Source: L737-748 */
+}
+
+.pros-cons-container_shortcode .square-box .content h3 {
+  font-weight: var(--font-black, 900);
+  font-size: 30px;
+  margin-bottom: var(--space-sm, 10px);
+  /* Source: L750-754 */
+}
+
+/* Pros heading - green */
+.pros-cons-container_shortcode .pros.square-box .content h3 {
+  color: var(--vert-bon-jardin);
+  /* Source: L756-759 */
+}
+
+/* Cons heading - orange */
+.pros-cons-container_shortcode .cons.square-box .content h3 {
+  color: var(--orange-lectrique);
+  /* Source: L761-764 */
+}
+
+/* Pros border */
+.pros-cons-container_shortcode .pros {
+  border: 3px solid rgba(53, 219, 133, 0.35);
+  /* Source: L767-769 */
+}
+
+/* Cons border */
+.pros-cons-container_shortcode .cons {
+  border: 3px solid rgba(255, 92, 51, 0.35);
+  /* Source: L771-773 */
+}
+
+/* ========================================
+   SOUS-NOTES & FICHE TECHNIQUE
+   Source: L564-611
+   ======================================== */
+
+.sous-notes {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  flex-wrap: wrap;
+  /* Source: L573-579 */
+}
+
+.sous-notes .critere {
+  flex-basis: 48%;
+  gap: var(--space-xs, 5px);
+  flex-direction: column;
+  display: flex;
+  /* Source: L566-571 */
+}
+
+.sous-notes .critere .nom,
+.sous-notes .critere .etoiles {
+  flex-basis: 50%;
+  /* Source: L581-584 */
+}
+
+.fiche-technique .caracteristique .nom,
+.fiche-technique .caracteristique .valeur,
+.sous-notes .nom {
+  font-size: 16px;
+  line-height: var(--leading-none, 1);
+  /* Source: L586-591 */
+}
+
+.sous-notes .nom {
+  font-weight: var(--font-bold, bold);
+  /* Source: L593-595 */
+}
+
+.sous-notes .etoiles {
+  color: var(--bleu-salon);
+  font-size: var(--text-3xl, 2rem);
+  line-height: var(--leading-none, 1);
+  /* Source: L597-601 */
+}
+
+.fiche-technique,
+.sous-notes {
+  gap: var(--gap-lg, 20px);
+  /* Source: L603-606 */
+}
+
+.fiche-technique {
+  display: flex;
+  flex-wrap: wrap;
+  min-height: 200px;
+  display: block;
+  /* Source: L608-611 + L3507-3510 */
+}
+
+/* ========================================
+   NOTES-PRODUIT (Star Ratings)
+   Merged: L2094-2097 + L2123-2126
+   ======================================== */
+
+.notes-produit {
+  width: 100%;
+  flex-direction: column;
+  display: flex;
+  flex-wrap: wrap;
+  /* Merged: L2094-2097 + L2123-2126 */
+}
+
+.notes_container {
+  display: flex;
+  flex-wrap: wrap;
+  /* Source: L2118-2121 */
+}
+
+.etoiles-container {
+  display: flex;
+  min-height: 20px;
+  height: 20px;
+  /* Source: L2099-2103 */
+}
+
+.note-critere {
+  display: flex;
+  flex-basis: 50%;
+  justify-content: space-between;
+  padding: var(--space-sm, 10px);
+  padding-bottom: 0;
+  min-height: 20px;
+  /* Source: L2105-2112 */
+}
+
+.etoile {
+  min-height: 20px;
+  /* Source: L2114-2116 */
+}
+
+.note-critere span {
+  font-size: 16px;
+  /* Source: L2128-2130 */
+}
+
+/* ========================================
+   GLOBAL NOTATION (Star Rating Badge)
+   Source: L2237-2254
+   ======================================== */
+
+.global_notation_absolute {
+  position: absolute !important;
+  top: 14px;
+  right: 20px;
+  height: fit-content !important;
+  /* Source: L2237-2242 */
+}
+
+.global_notation_absolute,
+.global_notation_absolute.no_background {
+  background-color: transparent !important;
+  /* Source: L2244-2247 */
+}
+
+/* ========================================
+   TABLE OF CONTENTS (TOC)
+   Source: L3158-3185
+   ======================================== */
+
+.toc-desktop ul {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.5rem;
+  list-style: none;
+  padding-left: 0;
+  margin: 0;
+  /* Source: L3159-3166 */
+}
+
+.toc-link {
+  color: var(--color-gray-700, #333);
+  text-decoration: none;
+  font-weight: var(--font-bold, bold);
+  /* Source: L3174-3179 */
+}
+
+.toc-link:hover,
+.toc-link[aria-current="location"] {
+  text-decoration: underline;
+  /* Source: L3181-3185 */
+}
+
+/* Easy TOC plugin container */
+.ez-toc-v2-container {
+  min-height: 100px;
+  /* Source: L3502-3504 */
+}
+
+/* ========================================
+   CHAPEAU CONTENT (Intro Section)
+   Source: L3495-3499
+   ======================================== */
+
+.chapeau-content {
+  min-height: 120px;
+  /* Source: L3496-3499 - CLS reserve */
+}
+
+.chapeau_post_card p {
+  /* Source: L1517 */
+}
+
+.chapeau_article a {
+  /* Source: L2351 */
+}
+
+/* Taxonomy chapeau link color */
+.tax_chapeau a,
+.tax_content a {
+  color: var(--education);
+  /* Source: L3077-3080 */
+}
+
+/* ========================================
+   GB HEADLINE SHORTCODE
+   Merged: L3038-3064 + L3089-3091
+   ======================================== */
+
+.gb-headline-shortcode {
+  display: flex;
+  gap: var(--space-sm, 10px);
+  align-items: center;
+  column-gap: 0.5em;
+  color: var(--education);
+  font-weight: var(--font-bold, 700);
+  text-transform: uppercase;
+  font-size: 23px;
+  width: fit-content;
+  padding-bottom: var(--space-sm, 10px);
+  margin-top: 0;
+  margin-bottom: var(--space-lg, 20px);
+  border-bottom-width: 3px;
+  /* Merged: L3047-3064 + L3089-3091 */
+}
+
+.gb-headline-shortcode .gb-icon {
+  font-size: 23px;
+  text-transform: uppercase;
+  color: var(--education);
+  height: 23px;
+  width: 23px;
+  position: relative;
+  /* Source: L3038-3045 */
+}
+
+/* Buying guides shortcode headline */
+.related-content.buying-guides .gb-headline-shortcode {
+  /* Source: L119 */
+}
+
+/* ========================================
+   SINGLE TEST PAGE STYLES
+   Source: L2271-2307
+   ======================================== */
+
+.single-test h2 {
+  margin-bottom: var(--space-lg, 20px);
+  /* Source: L2271-2274 */
+}
+
+.single-test .site-main,
+.single-post .site-main {
+  padding: var(--space-lg, 20px) 0;
+  /* Source: L2278-2281 */
+}
+
+/* Test template typography */
+.test-template-default h1 {
+  /* Mobile override handled below */
+}
+
+.test-template-default h2 {
+  font-weight: var(--font-black, 900);
+}
+
+.test-template-default p,
+.test-template-default li {
+  /* Mobile override: font-size: 1rem; line-height: 1.5; */
+}
+
+/* ========================================
+   GB CONTAINER SPECIFIC IDS
+   Source: L534-546
+   ======================================== */
+
+.gb-container-1f1e0492,
+.gb-container-1f8946bc {
+  object-fit: cover;
+  height: 500px;
+  width: 500px;
+  min-height: 500px;
+  max-width: 500px;
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  /* Source: L534-546 */
+}
+
+/* ========================================
+   RESPONSIVE - MOBILE (≤ 768px)
+   ======================================== */
+
+@media (max-width: 768px) {
+  /* Pros/cons mobile */
+  .pros-cons-container_shortcode .square-box .content h3 {
+    font-size: 1.1rem !important;
+    /* Source: L778-780 */
+  }
+
+  .pros-cons-container_shortcode {
+    flex-direction: column;
+    /* Source: L782-784 */
+  }
+
+  .pros-cons-container_shortcode .square-box {
+    width: 100%;
+    padding: 15px;
+    /* Source: L786-791 */
+  }
+
+  /* Note critere full width */
+  .note-critere {
+    flex-basis: 100%;
+    padding: 0;
+    /* Source: L2132-2137 */
+  }
+
+  /* Single test headings */
+  .single-test h2 {
+    margin-top: var(--space-sm, 10px);
+    margin-bottom: var(--space-lg, 20px);
+    /* Source: L2293-2297 */
+  }
+
+  .single-test h3 {
+    font-size: 1rem;
+    /* Source: L2299-2302 */
+  }
+
+  .single-test .site-main {
+    padding-bottom: 0;
+    /* Source: L2304-2306 */
+  }
+
+  /* Global notation position */
+  .global_notation_absolute {
+    top: 14px;
+    right: 0;
+    /* Source: L2249-2253 */
+  }
+
+  /* Section containers mobile padding */
+  .ou_acheter_container,
+  .pros-cons-container_shortcode,
+  .faq-section,
+  .presentation-section,
+  .contenu-section,
+  .chapeau-content,
+  .notes-produit,
+  .caracteristiques_container,
+  .conclusion-section {
+    width: 100%;
+    max-width: 1000px;
+    padding: var(--space-sm, 10px);
+    margin-right: auto;
+    margin-left: auto;
+    border-radius: var(--radius-md, 6px);
+    border: 0 solid;
+    background-color: var(--color-gray-200, #f3f3f3);
+    /* Source: L1731-1748 */
+  }
+
+  /* Section headings mobile */
+  .square-box h3,
+  .presentation-section h2,
+  .contenu-section h2,
+  .contenu-section h3,
+  .notes-produit h2,
+  .caracteristiques_container h2,
+  .title_container h2,
+  .test-template-default h2 {
+    font-weight: var(--font-black, 900);
+    font-size: 1.1rem !important;
+    text-align: left;
+    /* Source: L1702-1713 */
+  }
+
+  .shortcode_container h1 {
+    font-size: 1.1rem !important;
+    /* Source: L1715-1717 */
+  }
+
+  .test-template-default p,
+  .test-template-default li {
+    font-size: 1rem;
+    line-height: 1.5;
+    /* Source: L1721-1725 */
+  }
+
+  .test-template-default h1 {
+    font-size: 1.1rem !important;
+    /* Source: L1727-1729 */
+  }
+}
+
+/* GB Container responsive */
+@media (max-width: 996px) {
+  .gb-container-1f1e0492,
+  .gb-container-1f8946bc {
+    object-fit: cover;
+    height: 300px;
+    width: 300px;
+    min-height: 300px;
+    max-width: 300px;
+    /* Source: L548-558 */
+  }
+}
+
+/* TOC columns desktop */
+@media (min-width: 768px) {
+  .toc-desktop.toc-columns ul {
+    grid-template-columns: 1fr 1fr;
+    /* Source: L3168-3172 */
+  }
+}
+
+/* ========================================
+   SHARE BLOCK HIDE
+   Source: L3512-3515
+   ======================================== */
+
+.wp-container-core-group-is-layout-8c890d92 {
+  display: none !important;
+  /* Source: L3513-3515 - Hide share block */
+}
+

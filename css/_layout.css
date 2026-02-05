@@ -1,0 +1,670 @@
+/* ====================================
+   LAYOUT GLOBAL
+   Site structure, containers, sidebars, footer
+
+   Source: style.css comprehensive migration
+   Generated: 2026-02-04
+
+   DUPLICATES RESOLVED:
+   - GeneratePress blocks: L954-1072 + L1877-1991 → merged
+   - .comparaison-container: L922-932 + L1845-1855 → merged
+   - .inside-article: L875, L1092, L2015, L2309 → hierarchy
+   ==================================== */
+
+/* ========================================
+   GENERATEPRESS BASE STYLES
+   Merged from L954-1072 and L1877-1991
+   ======================================== */
+
+/* Site title and tag line */
+.site-description {
+  margin-top: 1.2em;
+  background-color: var(--color-site-description-bg, rgba(31, 32, 36, 0.4));
+  padding: 14px;
+  border: 1px solid var(--contrast-5);
+}
+
+/* Global box shadow */
+.site,
+.box-shadow {
+  box-shadow: var(--shadow-site, 0px 0px 20px -10px rgba(0, 0, 0, 0.3));
+}
+
+/* Forms and buttons - base radius */
+.button,
+.submit {
+  border-radius: var(--radius-xs, 3px);
+}
+
+/* ========================================
+   SITE MAIN CONTAINER
+   Hierarchy: base → template-specific → page-specific
+   Source: L2256-2290, L2333-2348
+   ======================================== */
+
+/* Base site-main (default) */
+.site-main {
+  padding: var(--space-lg, 40px) var(--space-md, 20px);
+  background-color: var(--base-2);
+}
+
+/* Template-specific overrides */
+.single-test .site-main,
+.single-post .site-main {
+  padding: var(--space-md, 20px) 0;
+  /* Source: L2278-2281 */
+}
+
+.home .site-main {
+  padding: var(--space-sm, 10px);
+  /* Source: L2283-2285 */
+}
+
+.archive .site-main {
+  padding: var(--space-lg, 40px) var(--space-md, 20px);
+  background-color: var(--base-2);
+  /* Source: L1030-1032 (GP block) */
+}
+
+/* Page-specific overrides */
+.page-id-99 .site-main,
+.blog .site-main {
+  margin: 0;
+  padding: var(--space-lg, 40px) var(--space-md, 20px) !important;
+  background-color: var(--base-2);
+  /* Source: L2333-2338 */
+}
+
+/* Archive content layout */
+.archive .site-content {
+  display: flex;
+  padding-top: var(--space-md, 20px);
+  /* Source: L1953-1956 (GP block 2) */
+}
+
+/* Taxonomy test layout */
+.tax-categorie_test #main {
+  padding: 0 var(--space-md, 20px);
+  /* Source: L1035-1037 */
+}
+
+.tax-categorie_test #content {
+  padding-top: var(--space-sm, 10px);
+  /* Source: L1039-1041 */
+}
+
+/* ========================================
+   ARTICLE CONTAINERS
+   Resolved padding conflicts from 4 occurrences
+   Source: L875, L1092, L2015, L2309
+   ======================================== */
+
+/* Base article padding */
+.inside-article {
+  padding: var(--space-md, 20px);
+  padding-left: var(--space-md, 20px) !important;
+  padding-right: var(--space-md, 20px) !important;
+  /* Source: L1092-1096, L2015-2019 */
+}
+
+/* Home/Archive: tighter padding */
+.home .inside-article,
+.archive .inside-article {
+  padding-left: var(--space-sm, 10px) !important;
+  padding-right: var(--space-sm, 10px) !important;
+  /* Source: L2309-2312 */
+}
+
+/* Single marque: no padding */
+.single-marque.separate-containers .inside-article {
+  padding: 0 !important;
+  /* Source: L875-878, L697-699 */
+}
+
+/* ========================================
+   SIDEBAR
+   Source: L976-985, L1457-1468, L1903-1907
+   ======================================== */
+
+.sidebar.is-right-sidebar {
+  background-color: var(--base-2);
+}
+
+.sidebar .widget {
+  background-color: var(--color-white, #fff);
+  /* Source: L1457-1459 */
+}
+
+@media (min-width: 768px) {
+  .sidebar.is-right-sidebar > .inside-right-sidebar {
+    position: sticky;
+    top: var(--nav-sticky-top, 54px);
+    /* Source: L980-985, L1903-1907 */
+  }
+}
+
+@media (max-width: 768px) {
+  .widget-area .widget {
+    padding-top: 0;
+    padding-right: 15px;
+    padding-bottom: 0;
+    padding-left: 15px;
+    /* Source: L1461-1468 */
+  }
+
+  .sidebar.is-right-sidebar {
+    margin-bottom: 45px;
+    /* Source: L2599-2601 */
+  }
+}
+
+/* ========================================
+   ARCHIVE GRID LAYOUT
+   Source: L1044-1068, L1961-1968
+   ======================================== */
+
+@media (min-width: 768px) {
+  .archive .site-main .ratio-third {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    /* Source: L1044-1047, L1961-1963 */
+  }
+
+  .archive .site-main .ratio-third > .gb-query-loop-item:first-child {
+    grid-column: 1 / 3;
+    grid-row: 1 / 3;
+    /* Source: L1049-1052, L1966-1968 */
+  }
+
+  /* Card titles in archive context */
+  .card__title,
+  .related-articles__card-title a,
+  .related-content__card-title a {
+    font-size: 20px;
+    /* Source: L1064-1068 (final value after 16px override) */
+  }
+}
+
+/* ========================================
+   COMPARISON PAGE
+   Merged: L922-932 + L1845-1855
+   ======================================== */
+
+.comparaison-container {
+  display: flex;
+  justify-content: space-evenly;
+}
+
+.comparaison-container .test {
+  flex-basis: 50%;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}
+
+/* ========================================
+   PAGINATION STYLES
+   Source: L35-79, L185-220, L269-273, L450-478
+   ======================================== */
+
+/* GeneratePress pagination */
+.separate-containers .paging-navigation#nav-below {
+  display: block;
+  /* Source: L35-37 */
+}
+
+.separate-containers .paging-navigation#nav-below .nav-links {
+  text-align: center;
+  margin: 2rem 0;
+  /* Source: L39-42 */
+}
+
+.separate-containers .paging-navigation#nav-below .nav-links > *,
+.marques-pagination a {
+  display: inline-block;
+  line-height: var(--leading-loose, 1.7em);
+  padding: 8px 12px;
+  background: var(--color-gray-300, #f1f1f1);
+  color: var(--color-text-primary, #333);
+  text-decoration: none;
+  border-radius: var(--radius-md, 5px);
+  margin: 2px;
+  /* Source: L44-54 */
+}
+
+.separate-containers .paging-navigation#nav-below .nav-links .current,
+.marques-pagination a.current-page {
+  font-weight: var(--font-bold, 700);
+  background: var(--color-black, #000);
+  color: var(--color-white, white);
+  /* Source: L56-62 */
+}
+
+.separate-containers .paging-navigation#nav-below .nav-links .prev,
+.separate-containers .paging-navigation#nav-below .nav-links .next {
+  font-size: 0;
+  /* Source: L64-67 */
+}
+
+.separate-containers .paging-navigation#nav-below .nav-links .prev:after {
+  content: '«';
+  font-size: 16px;
+  line-height: var(--leading-loose, 1.7em);
+  /* Source: L69-73 */
+}
+
+.separate-containers .paging-navigation#nav-below .nav-links .next:after {
+  content: '»';
+  font-size: 16px;
+  line-height: var(--leading-loose, 1.7em);
+  /* Source: L75-79 */
+}
+
+/* Custom WP pagination */
+.custom-wp-pagination {
+  text-align: center;
+  margin: 2rem 0;
+  /* Source: L187-190 */
+}
+
+.custom-wp-pagination ul {
+  display: inline-flex;
+  margin: auto;
+  list-style: none;
+  padding: 0;
+  flex-wrap: wrap;
+  justify-content: center;
+  /* Source: L192-199 */
+}
+
+.custom-wp-pagination li {
+  margin: 2px;
+  /* Source: L201-203 */
+}
+
+.custom-wp-pagination a,
+.custom-wp-pagination span {
+  display: inline-block;
+  padding: 8px 12px;
+  background: var(--color-gray-300, #f1f1f1);
+  color: var(--color-text-primary, #333);
+  text-decoration: none;
+  border-radius: var(--radius-md, 5px);
+  /* Source: L205-213 */
+}
+
+.custom-wp-pagination .current {
+  background: var(--color-black, #000);
+  color: var(--color-white, white);
+  font-weight: var(--font-bold, bold);
+  /* Source: L215-219 */
+}
+
+/* Marques pagination */
+.marques-pagination {
+  text-align: center;
+  margin-top: 45px;
+  /* Source: L269-272 */
+}
+
+/* Marque posts pagination */
+.marque-posts-pagination {
+  text-align: center;
+  display: inline-flex;
+  margin: inherit;
+  width: -webkit-fill-available;
+  justify-content: center;
+  /* Source: L450-456 */
+}
+
+.marque-posts-pagination .page-numbers {
+  padding: 8px 12px;
+  margin: 2px;
+  text-decoration: none;
+  color: var(--color-black, #000);
+  border-radius: var(--radius-md, 5px);
+  font-weight: var(--font-medium, 500);
+  transition: var(--transition-all, all 0.3s ease);
+  line-height: var(--leading-loose, 1.7em);
+  display: flex;
+  list-style-type: none;
+  /* Source: L458-469 */
+}
+
+.marque-posts-pagination .page-numbers.current {
+  background: var(--color-black, #000);
+  color: var(--color-white, white);
+  /* Source: L471-474 */
+}
+
+.marque-posts-pagination a.page-numbers:hover {
+  color: var(--color-black, #000);
+  /* Source: L476-478 */
+}
+
+/* Page number links (archive) */
+.page-number a {
+  display: inline-block;
+  line-height: var(--leading-loose, 1.7em);
+  padding: 8px 12px;
+  background: var(--color-gray-300, #f1f1f1);
+  color: var(--color-text-primary, #333);
+  text-decoration: none;
+  border-radius: var(--radius-md, 5px);
+  margin: 2px;
+  /* Source: L3745-3754 */
+}
+
+/* ========================================
+   FOOTER STYLES
+   Source: L501-509, L823-869, L2369-2397, L2701-2706
+   ======================================== */
+
+.site-footer {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  background: var(--color-black, #000);
+  /* Source: L2701-2706 */
+}
+
+.site-footer * {
+  color: var(--color-white, #fff);
+  /* Source: L502-504 */
+}
+
+.site-footer h2 {
+  margin-bottom: var(--space-xs, 5px);
+  text-align: left;
+  /* Source: L2382-2385 */
+}
+
+.site-footer ul {
+  line-height: var(--leading-snug, 1.35em);
+  /* Source: L2387-2389 */
+}
+
+.footer_list {
+  margin: 0;
+  list-style-type: none;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-xs, 5px);
+  /* Source: L2370-2376 */
+}
+
+.footer_list li {
+  line-height: var(--leading-normal, 1.5);
+  /* Source: L2378-2380 */
+}
+
+/* Footer email form */
+.email_form_container {
+  display: flex;
+  background-color: var(--color-white, #fff);
+  border-radius: var(--radius-xl, 8px) !important;
+  padding: 4px 3px;
+  /* Source: L825-830 */
+}
+
+form#sib_signup_form_1 {
+  padding: 0 !important;
+  /* Source: L832-834 */
+}
+
+form#sib_signup_form_1 .sib-default-btn {
+  margin: 0 !important;
+  padding-top: 0 !important;
+  padding-bottom: 0 !important;
+  border-radius: var(--radius-xl, 8px) !important;
+  height: 50px !important;
+  width: 50px;
+  background-color: var(--color-black, #000) !important;
+  /* Source: L837-845 */
+}
+
+.sib-email-area {
+  margin: 0 !important;
+  border: none !important;
+  /* Source: L847-850 */
+}
+
+.sib-email-area::placeholder {
+  color: var(--color-black, #000);
+  /* Source: L852-854 */
+}
+
+/* Footer SVG logo */
+.svg_logo_white_container {
+  position: absolute;
+  right: 0;
+  bottom: -65px;
+  /* Source: L795-798, L856-861 */
+}
+
+.svg_logo_white_container path {
+  fill: var(--color-white, #fff);
+  /* Source: L800-802 */
+}
+
+/* ========================================
+   GLOBAL UTILITIES
+   Source: various locations
+   ======================================== */
+
+/* No margin paragraph */
+.no_margin_paragraph {
+  margin: 0;
+  /* Source: L648-650 */
+}
+
+/* Text truncation */
+.truncate_text {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  width: 100%;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  display: -webkit-box;
+  /* Source: L652-659 */
+}
+
+/* No content state */
+.no-content {
+  text-align: center;
+  color: var(--color-text-muted, #7f8c8d);
+  font-style: italic;
+  padding: var(--space-xl, 60px) var(--space-md, 20px);
+  background: var(--color-gray-100, #f8f9fa);
+  border-radius: var(--radius-3xl, 12px);
+  font-size: 18px;
+  /* Source: L480-488 */
+}
+
+/* Publication containers margin reset */
+.publication_container_no_margin .publication_container {
+  margin: 0;
+  /* Source: L2395-2397 */
+}
+
+/* Popular brands section */
+.popular-brands-section {
+  display: block;
+  margin-bottom: var(--space-md, 20px);
+  /* Source: L81-84 */
+}
+
+.popular-brands-section > span {
+  font-weight: var(--font-bold, bold);
+  text-decoration: underline;
+  display: inline-block;
+  margin-right: var(--space-sm, 10px);
+  /* Source: L86-91 */
+}
+
+.popular-brands-section ul {
+  list-style: none;
+  padding-right: var(--space-sm, 10px);
+  display: inline-block;
+  margin: 0;
+  /* Source: L93-99 */
+}
+
+.popular-brands-section ul li {
+  display: inline-block;
+  padding-right: var(--space-sm, 10px);
+  /* Source: L101-104 */
+}
+
+/* List item utility */
+.list_item {
+  list-style-type: none;
+  margin-left: 0;
+  /* Source: L902-905 */
+}
+
+/* ========================================
+   SINGLE TEST LAYOUT
+   Source: L2271-2307
+   ======================================== */
+
+.single-test h2 {
+  margin-bottom: var(--space-md, 20px);
+  /* Source: L2271-2274 */
+}
+
+/* ========================================
+   WIDGET SIDEBAR BLOCKS
+   Source: L2679-2686
+   ======================================== */
+
+#block-8 {
+  padding-bottom: 0;
+  /* Source: L2680-2682 */
+}
+
+#block-4 {
+  padding-top: 0;
+  /* Source: L2684-2686 */
+}
+
+/* Heading weight override */
+h3 {
+  font-weight: var(--font-semibold, 600) !important;
+  /* Source: L2688-2690 */
+}
+
+/* Test content link color */
+.test_content a {
+  color: var(--education);
+  font-weight: var(--font-normal, 400);
+  /* Source: L2692-2695 */
+}
+
+/* Share block hide */
+.wp-container-core-group-is-layout-8c890d92 {
+  display: none !important;
+  /* Source: L3513-3515 */
+}
+
+/* ========================================
+   MOBILE RESPONSIVE OVERRIDES
+   ======================================== */
+
+@media (max-width: 768px) {
+  /* Archive site-main mobile */
+  .archive .site-main {
+    padding: 0 var(--space-md, 20px);
+    background-color: var(--base-2);
+    /* Source: L1972-1977 */
+  }
+
+  /* Home site-main mobile */
+  .home .site-main {
+    padding: var(--space-md, 20px) 0 var(--space-md, 20px) 0;
+    /* Source: L2175-2178 */
+  }
+
+  /* Page-specific mobile */
+  .page-id-99 .site-main,
+  .blog .site-main {
+    padding: var(--space-md, 20px) var(--space-sm, 10px) !important;
+    /* Source: L2340-2347 */
+  }
+
+  /* Single test mobile */
+  .single-test h2 {
+    margin-top: var(--space-sm, 10px);
+    margin-bottom: var(--space-md, 20px);
+    /* Source: L2292-2297 */
+  }
+
+  .single-test h3 {
+    font-size: var(--text-lg, 1rem);
+    /* Source: L2299-2302 */
+  }
+
+  .single-test .site-main {
+    padding-bottom: 0;
+    /* Source: L2304-2306 */
+  }
+
+  /* Single marque sidebar mobile */
+  .single-marque .sidebar.is-right-sidebar {
+    padding: var(--space-md, 20px);
+    /* Source: L2736-2741 */
+  }
+
+  /* Galerie images mobile (moved from _cards for layout context) */
+  .single-marque.separate-containers .inside-article {
+    padding: 0 !important;
+    /* Source: L697-699 */
+  }
+}
+
+/* ========================================
+   CATEGORY TERM COLORS (GeneratePress)
+   Source: L1001-1027, L1924-1950
+   NOTE: Consider moving to _badges.css
+   ======================================== */
+
+body:not(.single):not(.blog):not(.search-results) .post-term-item {
+  padding: var(--space-xs, 5px) var(--space-sm, 10px);
+  border-radius: var(--radius-xs, 3px);
+  /* Source: L988-999 */
+}
+
+body.blog .post-term-item,
+body.search-results .post-term-item {
+  padding: var(--space-sm, 10px) var(--space-md, 20px);
+  /* Source: L992-995, L1915-1918 */
+}
+
+body:not(.single) .post-term-item.term-business {
+  background-color: var(--business);
+}
+
+body:not(.single) .post-term-item.term-community {
+  background-color: var(--community);
+}
+
+body:not(.single) .post-term-item.term-education {
+  background-color: var(--education);
+}
+
+body:not(.single) .post-term-item.term-entertainment {
+  background-color: var(--entertainment);
+}
+
+body:not(.single) .post-term-item.term-lifestyle {
+  background-color: var(--lifestyle);
+}
+
+body:not(.single) .post-term-item.term-technology {
+  background-color: var(--technology);
+}
+
+body:not(.single) .post-term-item.term-travel {
+  background-color: var(--travel);
+}
+/* Source: L1001-1027, L1924-1950 */

@@ -1,0 +1,306 @@
+/* ====================================
+   LABOMAISON – BASE STYLES
+   CSS Custom Properties (Design Tokens)
+
+   Source: style.css analysis
+   Generated: 2026-02-04
+
+   Usage:
+   - Import this file FIRST in style-refactored.css
+   - All hardcoded values should reference these variables
+   - Document color usage for future maintenance
+   ==================================== */
+
+:root {
+  /* ========================================
+     COLORS – Primary Palette
+     ======================================== */
+
+  /* Brand Colors */
+  --color-primary: #343a40;        /* Dark gray - main brand (18 occurrences) */
+  --color-primary-alt: #2b2e34;    /* Slightly darker - buttons, badges (15 occurrences) */
+  --color-accent: #b0121c;         /* Red - CTAs, links, highlights */
+  --color-accent-hover: #8d0e16;   /* Darker red for hover states */
+
+  /* Neutrals */
+  --color-white: #fff;
+  --color-black: #000;
+  --color-gray-50: #f9f9f9;        /* Lightest - facet blocks */
+  --color-gray-100: #f8f9fa;       /* Very light - no-content bg */
+  --color-gray-200: #f3f3f3;       /* Light gray - section backgrounds (47 occurrences) */
+  --color-gray-300: #f1f1f1;       /* Pagination background */
+  --color-gray-400: #f0f0f0;       /* Placeholder gradient start */
+  --color-gray-500: #e0e0e0;       /* Placeholder gradient end, pill even */
+  --color-gray-600: #ddd;          /* Borders, sliders */
+  --color-gray-700: #ccc;          /* Border secondary */
+  --color-gray-800: #C0C0C0;       /* Pill odd */
+  --color-gray-900: #999;          /* Placeholder text */
+
+  /* Text Colors */
+  --color-text-primary: #333;      /* Main text */
+  --color-text-secondary: #5e5e69; /* Muted text (excerpts, breadcrumbs) */
+  --color-text-tertiary: #666;     /* Dates, meta */
+  --color-text-dark: #252525;      /* Icons, dark elements */
+  --color-text-darker: #222;       /* Facet titles */
+  --color-text-darkest: #202020;   /* Navigation items */
+  --color-text-muted: #7f8c8d;     /* No-content text */
+  --color-text-brand: #262626;     /* Marque excerpt */
+
+  /* Category/Term Colors (GeneratePress) */
+  --color-business: var(--business, #6c757d);
+  --color-community: var(--community, #17a2b8);
+  --color-education: var(--education, #007bff);
+  --color-entertainment: var(--entertainment, #e83e8c);
+  --color-lifestyle: var(--lifestyle, #fd7e14);
+  --color-technology: var(--technology, #28a745);
+  --color-travel: var(--travel, #20c997);
+
+  /* Special Colors */
+  --color-electromenager: #ff5b33; /* Term electromenager */
+  --color-filter-blue: #0366d6;    /* Filter buttons */
+  --color-filter-blue-hover: #024c9b;
+  --color-link-blue: #0073aa;      /* Related news term links */
+  --color-test-badge-border: #989898;
+  --color-red-menu: red;           /* Promotional menu item */
+
+  /* Overlay Colors */
+  --color-overlay-dark: rgba(0, 0, 0, 0.5);
+  --color-overlay-light: rgba(47, 47, 47, 0.59);
+  --color-overlay-subtle: rgba(0, 0, 0, 0.2);
+  --color-site-description-bg: rgba(31, 32, 36, 0.4);
+
+  /* ========================================
+     COLORS – Semantic Aliases
+     ======================================== */
+
+  /* Backgrounds */
+  --bg-section: var(--color-gray-200);
+  --bg-card: var(--color-white);
+  --bg-badge: var(--color-primary);
+  --bg-button: var(--color-primary-alt);
+  --bg-footer: var(--color-black);
+  --bg-test-badge: var(--color-primary-alt);
+
+  /* Borders */
+  --border-card: var(--color-gray-700);
+  --border-facet: var(--color-gray-600);
+  --border-brand-accent: var(--color-primary);
+
+  /* Badge System */
+  --color-badge-bg: var(--color-primary);
+  --color-badge-text: var(--color-white);
+
+  /* ========================================
+     SPACING
+     ======================================== */
+
+  --space-0: 0;
+  --space-1: 2px;
+  --space-2: 3px;
+  --space-xs: 5px;       /* 5px - pill padding, small gaps */
+  --space-sm: 10px;      /* 10px - standard small spacing */
+  --space-md: 20px;      /* 20px - standard medium spacing */
+  --space-lg: 40px;      /* 40px - large spacing, navigation padding */
+  --space-xl: 60px;      /* 60px - extra large (no-content padding) */
+
+  /* Component-specific spacing */
+  --padding-card: 14px;
+  --padding-card-sm: 10px;
+  --padding-badge: var(--space-xs) var(--space-sm);
+  --padding-button: 8px 12px;
+  --padding-button-lg: 10px 20px;
+  --padding-section: var(--space-md);
+  --padding-nav: var(--space-lg);
+
+  --gap-card: var(--space-md);
+  --gap-grid: 16px;
+  --gap-small: var(--space-sm);
+  --gap-nav: 30px;
+
+  /* ========================================
+     TYPOGRAPHY
+     ======================================== */
+
+  /* Font Sizes */
+  --text-xs: 0.6rem;     /* ~10px - dates, small labels */
+  --text-sm: 0.75rem;    /* ~12px - terms, badges */
+  --text-base: 0.875rem; /* ~14px - small body text */
+  --text-md: 0.9rem;     /* ~14.4px - excerpts */
+  --text-lg: 1rem;       /* ~16px - body text */
+  --text-xl: 1.1rem;     /* ~17.6px - mobile headings */
+  --text-2xl: 1.2rem;    /* ~19.2px - article titles */
+  --text-3xl: 1.375rem;  /* ~22px - card titles */
+  --text-4xl: 1.4rem;    /* ~22.4px - archive headings */
+  --text-5xl: 25px;      /* shortcode h1 */
+  --text-6xl: 30px;      /* pros/cons h3 */
+
+  /* Font Weights */
+  --font-normal: 400;
+  --font-medium: 500;
+  --font-semibold: 600;
+  --font-bold: 700;
+  --font-extrabold: 800;
+  --font-black: 900;
+
+  /* Line Heights */
+  --leading-none: 1;
+  --leading-tight: 1.2;
+  --leading-snug: 1.35;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.6;
+  --leading-loose: 1.7;
+
+  /* ========================================
+     BORDERS & RADIUS
+     ======================================== */
+
+  --radius-xs: 3px;      /* Badges, buttons */
+  --radius-sm: 4px;      /* Related news image */
+  --radius-md: 5px;      /* Pagination */
+  --radius-lg: 6px;      /* Sections, pros/cons */
+  --radius-xl: 8px;      /* Cards, containers */
+  --radius-2xl: 10px;    /* Post type badge, marque item */
+  --radius-3xl: 12px;    /* Brand post list */
+  --radius-full: 9999px; /* Pills */
+
+  /* Border Widths */
+  --border-width-sm: 1px;
+  --border-width-md: 2px;
+  --border-width-lg: 3px;
+  --border-width-xl: 4px;
+
+  /* ========================================
+     SHADOWS
+     ======================================== */
+
+  --shadow-sm: 0 2px 5px rgba(0, 0, 0, 0.1);
+  --shadow-md: 5px 5px 10px 0 rgba(0, 0, 0, 0.1);
+  --shadow-lg: 0 2px 10px rgba(0, 0, 0, 0.08);
+  --shadow-xl: 0 5px 20px rgba(0, 0, 0, 0.12);
+  --shadow-card: rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  --shadow-site: 0px 0px 20px -10px rgba(0, 0, 0, 0.3);
+
+  /* ========================================
+     TRANSITIONS
+     ======================================== */
+
+  --transition-fast: 0.2s ease;
+  --transition-base: 0.3s ease;
+  --transition-slow: 0.5s ease;
+  --transition-bounce: 0.3s ease-in-out;
+
+  /* Component-specific transitions */
+  --transition-color: color var(--transition-base);
+  --transition-bg: background-color var(--transition-base);
+  --transition-transform: transform var(--transition-base);
+  --transition-all: all var(--transition-base);
+
+  /* ========================================
+     Z-INDEX SCALE
+     ======================================== */
+
+  --z-base: 1;
+  --z-dropdown: 10;
+  --z-sticky: 50;
+  --z-badge: 100;
+  --z-shortcode: 102;
+  --z-modal: 999;
+  --z-max: 9999;
+
+  /* ========================================
+     BREAKPOINTS (Documentation Only)
+     CSS cannot use variables in media queries
+     ======================================== */
+
+  --bp-mobile-sm: 480px;
+  --bp-tablet: 768px;
+  --bp-desktop: 1024px;
+  --bp-desktop-lg: 1200px;
+  --bp-desktop-xl: 1240px;
+
+  /* ========================================
+     LAYOUT DIMENSIONS
+     ======================================== */
+
+  --max-width-content: 1000px;
+  --max-width-nav: 1240px;
+  --max-width-filters: 1200px;
+
+  /* Sticky Navigation */
+  --nav-sticky-top: 54px;
+  --nav-logo-height: 50px;
+
+  /* Component Heights */
+  --height-category-container: 260px;
+  --height-category-mobile: 150px;
+  --height-related-news: 260px;
+  --height-star: 24px;
+  --height-author-image: 30px;
+
+  /* Card Dimensions */
+  --card-image-sm: 104px;
+  --card-image-md: 150px;
+  --card-min-height: 150px;
+  --card-max-height: 175px;
+  --article-thumbnail-height: 173px;
+
+  /* ========================================
+     PROS/CONS SPECIFIC
+     ======================================== */
+
+  --color-pros: rgba(53, 219, 133, 0.35);
+  --color-pros-text: var(--vert-bon-jardin, #35db85);
+  --color-cons: rgba(255, 92, 51, 0.35);
+  --color-cons-text: var(--orange-lectrique, #ff5c33);
+
+  /* ========================================
+     AFFILIZZ / PLUGIN SPECIFIC
+     ======================================== */
+
+  --affilizz-min-height-desktop: 480px;
+  --affilizz-min-height-mobile: 550px;
+  --affilizz-box-min-height: 700px;
+  --affilizz-box-min-height-mobile: 650px;
+  --affilizz-container-height: 28px;
+}
+
+/* ========================================
+   DARK MODE SUPPORT (Future)
+   Uncomment when implementing dark mode
+   ======================================== */
+
+/*
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-primary: #e0e0e0;
+    --bg-section: #1a1a1a;
+    --bg-card: #2d2d2d;
+    --color-text-primary: #e0e0e0;
+    --color-text-secondary: #a0a0a0;
+  }
+}
+*/
+
+/* ========================================
+   GENERATEPRESS VARIABLE MAPPING
+   Maps GP theme variables to our system
+   ======================================== */
+
+/*
+  GP Variables used in style.css:
+  - var(--base-2)      → Background sections
+  - var(--contrast)    → Text color
+  - var(--contrast-2)  → Secondary text
+  - var(--contrast-3)  → Card titles
+  - var(--contrast-5)  → Borders
+  - var(--bleu-salon)  → Blue accent
+  - var(--business)    → Category color
+  - var(--community)   → Category color
+  - var(--education)   → Category color
+  - var(--entertainment) → Category color
+  - var(--lifestyle)   → Category color
+  - var(--technology)  → Category color
+  - var(--travel)      → Category color
+  - var(--vert-bon-jardin) → Pros color
+  - var(--orange-lectrique) → Cons color
+*/

@@ -1,0 +1,378 @@
+/* ====================================
+   BADGES / LABELS / TERMS
+   Category pills, term labels, positioning
+
+   Source: style.css comprehensive migration
+   Generated: 2026-02-04
+
+   DUPLICATES RESOLVED:
+   - .post-term-item.term-electromenager: L1077-1079 + L1996-1998 → merged
+   - .post-term-item base: L1081-1086 + L1361-1376 + L2001-2009 → hierarchy
+   ==================================== */
+
+/* ========================================
+   BASE BADGE COMPONENT
+   Consolidated from L1081-1086, L1361-1376, L2001-2009
+   ======================================== */
+
+.post-term-item {
+  color: var(--color-badge-text, #fff) !important;
+  background-color: var(--color-badge-bg, #343a40) !important;
+  padding: var(--space-xs, 5px) var(--space-sm, 10px) !important;
+  border-radius: var(--radius-xs, 3px);
+  font-size: var(--text-sm, 10px) !important;
+  font-weight: var(--font-bold, bold);
+  text-transform: uppercase;
+  cursor: pointer;
+  display: block;
+  line-height: var(--leading-none, 1);
+  width: fit-content;
+  /* Combined from L1081-1086, L2001-2009 */
+}
+
+.post-term-item a {
+  color: var(--color-badge-text, #fff) !important;
+  /* Source: L1088-1090, L2011-2013 */
+}
+
+/* ========================================
+   RELATED NEWS TERM LINK
+   Source: L1283-1286, L1326-1334
+   ======================================== */
+
+.related-news__term-link {
+  color: var(--color-badge-text, #fff) !important;
+  font-weight: var(--font-bold, bolder);
+  cursor: pointer;
+  background-color: var(--color-black, #000);
+  padding: 2px var(--space-xs, 5px);
+  border-radius: var(--radius-md, 5px);
+  font-size: var(--text-sm, 10px);
+  line-height: var(--leading-none, 1);
+  text-decoration: none;
+  /* Source: L1326-1334 */
+}
+
+/* ========================================
+   TEST CATEGORY LINK
+   Source: L1380-1396
+   ======================================== */
+
+.test-category-link {
+  color: var(--color-badge-text, #fff) !important;
+  font-weight: var(--font-bold, bolder);
+  cursor: pointer;
+  background-color: var(--color-badge-bg, #343a40) !important;
+  padding: var(--space-xs, 5px) var(--space-sm, 10px) !important;
+  border-radius: var(--radius-xs, 3px);
+  font-size: var(--text-sm, 10px) !important;
+  position: absolute;
+  left: 8px;
+  text-transform: uppercase;
+  top: 10px;
+  z-index: var(--z-badge, 100);
+  line-height: var(--leading-none, 1);
+  max-height: 20px !important;
+  display: block;
+  /* Source: L1380-1396 */
+}
+
+/* Home context override */
+.home .test-category-link {
+  left: 18px !important;
+  /* Source: L1190-1192 */
+}
+
+/* Post banner context */
+.post_banner_container .test-category-link {
+  position: relative;
+  top: -5px;
+  left: 0;
+  margin-bottom: 15px;
+  margin-top: var(--space-sm, 10px);
+  /* Source: L1438-1444 */
+}
+
+/* ========================================
+   POSITION MODIFIERS
+   ======================================== */
+
+/* BEM-style modifiers for future migration */
+.post-term-item--absolute {
+  position: absolute;
+  top: 10px;
+  left: 8px;
+  z-index: var(--z-badge, 100);
+}
+
+.post-term-item--relative {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+
+/* ========================================
+   CONTEXTUAL POSITIONING
+   Source: L1402-1453, L2021-2023, L2230-2235
+   ======================================== */
+
+/* Query loop term container */
+.term_container_query_loop .post-term-item {
+  position: relative;
+  top: var(--space-sm, 10px);
+  left: -8px;
+  /* Source: L1402-1406 */
+}
+
+/* Content container query loop */
+.content_container_query_loop {
+  position: relative;
+  align-items: end;
+  /* Source: L1409-1412 */
+}
+
+/* Reset left position in query loop contexts */
+.term_container_query_loop .post-term-item,
+.content_container_query_loop .post-term-item {
+  left: unset;
+  /* Source: L1414-1417 */
+}
+
+/* Test cat shortcode container */
+.test_cat_shortcode_container {
+  position: absolute;
+  top: var(--space-sm, 10px);
+  z-index: var(--z-shortcode, 102);
+  /* Source: L1419-1423 */
+}
+
+/* Test cat element container */
+.test_cat_element_container {
+  position: absolute !important;
+  top: var(--space-sm, 10px);
+  left: 0;
+  /* Source: L1425-1429 */
+}
+
+/* Publication container term */
+.publication_container .term_absolute {
+  position: absolute !important;
+  top: 15px;
+  left: var(--space-sm, 10px);
+  z-index: var(--z-badge, 100);
+  /* Source: L1431-1436 */
+}
+
+/* Sidebar post container */
+.sidebar_post_container .post-term-item {
+  position: absolute;
+  top: var(--space-sm, 10px);
+  /* Source: L1446-1449 */
+}
+
+/* Single test post header */
+.single_test_post_header .post-term-item {
+  left: 0;
+  /* Source: L1451-1453 */
+}
+
+/* Terms container */
+.terms_container .post-term-item {
+  top: var(--space-sm, 10px);
+  /* Source: L2021-2023 */
+}
+
+/* Term absolute base */
+.term_absolute {
+  position: absolute;
+  top: 15px;
+  left: var(--space-sm, 10px);
+  z-index: var(--z-badge, 100);
+  /* Source: L2230-2235 */
+}
+
+/* Post archive container - reset absolute positioning */
+.post_archive_container .term_absolute {
+  position: relative;
+  top: unset;
+  left: unset;
+  /* Source: L2993-2997 */
+}
+
+/* Dynamic term class (search results) */
+.dynamic-term-class {
+  position: relative;
+  top: 15px;
+  /* Source: L1506-1509 */
+}
+
+.search-results .dynamic-term-class {
+  position: relative;
+  top: 15px;
+  /* Source: L1506-1509 */
+}
+
+/* ========================================
+   COLOR VARIATIONS
+   ======================================== */
+
+/* Electromenager - orange */
+.post-term-item.term-electromenager {
+  background-color: var(--color-electromenager, #ff5b33) !important;
+  /* Merged: L1077-1079 + L1996-1998 */
+}
+
+/* ========================================
+   TERM VISIBILITY CONTROL
+   Source: L1470-1479
+   ======================================== */
+
+/* Hide specific terms on home/test cat containers */
+.home_thumbnail_container .term-maison,
+.home_thumbnail_container .term-electro,
+.home_thumbnail_container .term-entretien,
+.home_thumbnail_container .term-cuisine,
+.test_cat_element_container .term-maison,
+.test_cat_element_container .term-electro,
+.test_cat_element_container .term-entretien,
+.test_cat_element_container .term-cuisine {
+  display: none;
+  /* Source: L1470-1479 */
+}
+
+/* Hide term in related articles */
+.related-content.related-articles .post-term-item {
+  display: none;
+  /* Source: L175-177 */
+}
+
+/* Taxonomy archive - visibility hidden instead of display none */
+.tax-categorie_test .related-content.related-articles .post-term-item {
+  visibility: hidden;
+  /* Source: L3072-3074 */
+}
+
+/* ========================================
+   POST TYPE BADGE (Brand Page)
+   Source: L348-366
+   ======================================== */
+
+.post-type-badge {
+  padding: 2px var(--space-sm, 10px);
+  border-radius: var(--radius-2xl, 10px);
+  font-size: 12px;
+  font-weight: var(--font-semibold, 600);
+  letter-spacing: 0.5px;
+  background: var(--color-primary-alt, #2b2e34);
+  color: var(--color-white, #fff);
+  line-height: 22px;
+  /* Source: L348-357 */
+}
+
+/* Test badge variant */
+.test-badge .post-type-badge {
+  background: var(--color-white, #fff);
+  color: var(--color-primary-alt, #2b2e34);
+  /* Source: L363-366 */
+}
+
+/* ========================================
+   POST CATEGORY LINK
+   Source: L359-361, L392-398
+   ======================================== */
+
+a.post-category {
+  font-size: 14px;
+  /* Source: L392-394 */
+}
+
+a.post-category:hover {
+  color: var(--color-accent, #B0121C);
+  /* Source: L359-361 */
+}
+
+.test-badge a.post-category {
+  color: var(--color-white, #fff);
+  /* Source: L396-398 */
+}
+
+/* ========================================
+   TEST BADGE CONTAINER
+   Source: L288-295
+   ======================================== */
+
+.test-badge {
+  background: var(--color-primary-alt, #2b2e34);
+  color: var(--color-white, white);
+  /* Source: L288-291 */
+}
+
+.test-badge .marque-post-list-item {
+  border-left: 4px solid var(--color-test-badge-border, #989898);
+  /* Source: L293-295 */
+}
+
+/* ========================================
+   VALUE PILLS (Table)
+   Source: L2406-2437
+   ======================================== */
+
+.valeur {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: end;
+  /* Source: L2407-2412 */
+}
+
+.valeur * {
+  font-size: 13px;
+  /* Source: L2414-2417 */
+}
+
+.value-pill-even {
+  background-color: var(--color-gray-500, #E0E0E0);
+  padding: var(--space-2, 3px) var(--space-xs, 5px);
+  border-radius: 20px;
+  display: inline-block;
+  margin: 2px;
+  width: fit-content;
+  /* Source: L2419-2427 */
+}
+
+.value-pill-odd {
+  background-color: var(--color-gray-800, #C0C0C0);
+  padding: var(--space-2, 3px) var(--space-xs, 5px);
+  border-radius: 20px;
+  display: inline-block;
+  margin: 2px;
+  width: fit-content;
+  /* Source: L2429-2437 */
+}
+
+/* ========================================
+   GLOBAL NOTATION (Star Rating Badge)
+   Source: L2237-2247
+   ======================================== */
+
+.global_notation_absolute {
+  position: absolute !important;
+  top: 14px;
+  right: 20px;
+  height: fit-content !important;
+  /* Source: L2237-2242 */
+}
+
+.global_notation_absolute,
+.global_notation_absolute.no_background {
+  background-color: transparent !important;
+  /* Source: L2244-2247 */
+}
+
+@media (max-width: 768px) {
+  .global_notation_absolute {
+    top: 14px;
+    right: 0;
+    /* Source: L2249-2253 */
+  }
+}
