@@ -479,6 +479,16 @@
 }
 
 /* ========================================
+   CUSTOM BREADCRUMB
+   Source: _legacy-temp.css (migrated)
+   ======================================== */
+
+.custom-breadcrumb-wrapper span>a:last-child {
+  pointer-events: none;
+  color: #5e5e69;
+}
+
+/* ========================================
    RANK MATH BREADCRUMB
    Source: L3757-3800
    ======================================== */

@@ -735,6 +735,20 @@
 }
 
 /* ========================================
+   PRODUCT BUTTON
+   Source: _legacy-temp.css (migrated)
+   ======================================== */
+
+.btn-product {
+  display: block;
+  margin: 20px auto;
+}
+
+.btn-product a {
+  color: #fff;
+}
+
+/* ========================================
    MOBILE RESPONSIVE
    ======================================== */
 

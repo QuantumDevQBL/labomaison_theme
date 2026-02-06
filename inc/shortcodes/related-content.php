@@ -312,57 +312,7 @@ add_shortcode('display_related_test_categories', 'display_related_test_categorie
 // [display_related_news_for_test] - Related news for test CPT
 // =============================================================================
 
-// Helper: render a post item card for test context
-if ( ! function_exists( 'render_post_item_for_test' ) ) {
-function render_post_item_for_test($post_id)
-{
-  $permalink = get_permalink($post_id);
-  $title = get_the_title($post_id);
-  $thumbnail_url = get_the_post_thumbnail_url($post_id, 'medium');
-  $last_updated = get_the_modified_time('j F Y à H:i', $post_id);
-  $chapeau = get_field('chapeau', $post_id);
-
-  $categories = get_the_category($post_id);
-  $category_html = '';
-  if (!empty($categories) && !is_wp_error($categories)) {
-    $selected_category = null;
-    foreach ($categories as $category) {
-      if ($category->parent == 0) {
-        $selected_category = $category;
-        break;
-      }
-    }
-    if (!$selected_category && !empty($categories)) {
-      $selected_category = $categories[0];
-    }
-
-    if ($selected_category) {
-      $term_link = get_category_link($selected_category->term_id);
-      if (!is_wp_error($term_link)) {
-        $category_html = '<span class="test-category-link term_absolute post-term-item term-' . esc_attr($selected_category->slug) . '">';
-        $category_html .= '<a href="' . esc_url($term_link) . '">' . esc_html($selected_category->name) . '</a>';
-        $category_html .= '</span>';
-      }
-    }
-  }
-
-	$thumbnail_url_safe = esc_url($thumbnail_url);
-
-  $html = "
-    <div class='article-card'>
-        <div class='article-thumbnail' style='background-image: url(\"$thumbnail_url\");'>
-            <a href='$permalink' class='overlay-link'></a>
-            $category_html
-        </div>
-        <div class='article-content'>
-            <span class='article-title'><a href='$permalink' class='article-title'>$title</a></span>
-            <p class='article-excerpt chapeau_post_card'>" . $chapeau . "</p>
-            <span class='datetime'>Mis à jour le $last_updated</span>
-        </div>
-    </div>";
-  return $html;
-}
-}
+// render_post_item_for_test() is in utilities/helpers.php (loaded first)
 
 function display_related_news_posts_for_test()
 {

@@ -28,5 +28,4 @@
 /* Media Queries (en dernier pour override) */
 @import './_media-queries.css';
 
-/* Legacy (temporaire - à supprimer progressivement) */
-@import './_legacy-temp.css';
+/* Legacy temp removed — all unique rules migrated to _cards.css and _plugins.css */

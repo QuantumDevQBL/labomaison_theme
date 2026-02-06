@@ -48,44 +48,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 // HELPER FUNCTIONS
 // =============================================================================
 
-// --- generate_card_html: card for post or taxonomy term ---
-if ( ! function_exists( 'generate_card_html' ) ) {
-function generate_card_html($post_or_term, $is_category = false) {
-      if ($is_category) {
-        $term_id = isset($post_or_term->term_id) ? (int) $post_or_term->term_id : 0;
-
-        $permalink = get_term_link($post_or_term, 'categorie_test');
-
-        $acf_ref = $term_id ? ('categorie_test_' . $term_id) : $post_or_term;
-
-        $title = get_field('titre', $acf_ref);
-        $featured_image_id = get_field('featured', $acf_ref);
-        $thumbnail_url = $featured_image_id ? wp_get_attachment_image_url($featured_image_id, 'medium') : '';
-        $content = isset($post_or_term->description) ? wp_trim_words($post_or_term->description, 10) : '';
-        $date = '';
-    } else {
-        $permalink = get_permalink($post_or_term->ID);
-        $title = get_the_title($post_or_term->ID);
-        $thumbnail_url = get_the_post_thumbnail_url($post_or_term->ID, 'medium');
-        $content = wp_trim_words(get_the_content(null, false, $post_or_term->ID), 10);
-        $date = get_the_date('d/m/Y \à H:i', $post_or_term->ID);
-    }
-
-    $output = '<div class="related-content__card">';
-    $output .= '<div class="related-content__image">';
-    $output .= '<img src="' . esc_url($thumbnail_url) . '" alt="' . esc_attr($title) . '">';
-    $output .= '</div>';
-    $output .= '<div class="related-content__content">';
-    $output .= '<span class="related-content__card-title"><a href="' . esc_url($permalink) . '">' . esc_html($title) . '</a></span>';
-    if ($date) {
-        $output .= '<span class="related-content__date">Publié le ' . esc_html($date) . '</span>';
-    }
-    $output .= '</div>';
-    $output .= '</div>';
-
-    return $output;
-}
-}
+// generate_card_html() is in utilities/helpers.php (loaded first)
 
 // --- clear_marques_cache: invalidate marques transient ---
 function clear_marques_cache() {
@@ -157,99 +120,7 @@ function marques_display_pagination($query) {
 }
 }
 
-// --- lm_pagination_markup_compat: add BEM classes to paginate_links output ---
-if ( ! function_exists( 'lm_pagination_markup_compat' ) ) {
-function lm_pagination_markup_compat($links_html) {
-    if (empty($links_html) || !is_string($links_html)) {
-        return $links_html;
-    }
-
-    // Add class to UL
-    if (strpos($links_html, '<ul') !== false) {
-        if (preg_match('#<ul[^>]*class=[\'"][^\'"]*[\'"][^>]*>#', $links_html)) {
-            $links_html = preg_replace_callback(
-                '#<ul([^>]*?)class=[\'"]([^\'"]*)[\'"]([^>]*?)>#',
-                function ($m) {
-                    $classes = trim($m[2]);
-                    $class_list = preg_split('/\s+/', $classes, -1, PREG_SPLIT_NO_EMPTY);
-
-                    if (!in_array('page-numbers', $class_list, true)) {
-                        $class_list[] = 'page-numbers';
-                    }
-
-                    return '<ul' . $m[1] . 'class="' . esc_attr(implode(' ', $class_list)) . '"' . $m[3] . '>';
-                },
-                $links_html,
-                1
-            );
-        } else {
-            $links_html = preg_replace('#<ul(\s*?)>#', '<ul class="page-numbers">', $links_html, 1);
-        }
-    }
-
-    // Add class="page-number" to every LI
-    if (strpos($links_html, '<li') !== false) {
-        $links_html = preg_replace_callback(
-            '#<li([^>]*)>#',
-            function ($m) {
-                $attrs = $m[1];
-
-                if (preg_match('#class=[\'"]([^\'"]*)[\'"]#', $attrs, $cm)) {
-                    $classes = trim($cm[1]);
-                    $class_list = preg_split('/\s+/', $classes, -1, PREG_SPLIT_NO_EMPTY);
-
-                    if (!in_array('page-number', $class_list, true)) {
-                        $class_list[] = 'page-number';
-                    }
-
-                    $attrs = preg_replace(
-                        '#class=[\'"][^\'"]*[\'"]#',
-                        'class="' . esc_attr(implode(' ', $class_list)) . '"',
-                        $attrs,
-                        1
-                    );
-                } else {
-                    $attrs .= ' class="page-number"';
-                }
-
-                return '<li' . $attrs . '>';
-            },
-            $links_html
-        );
-    }
-
-    // Add .current to the LI that contains the current span
-    $links_html = preg_replace_callback(
-        '#<li([^>]*)>(\s*)<span([^>]*?)aria-current=[\'"]page[\'"]([^>]*?)>(.*?)</span>(\s*)</li>#',
-        function ($m) {
-            $li_attrs = $m[1];
-
-            if (preg_match('#class=[\'"]([^\'"]*)[\'"]#', $li_attrs, $cm)) {
-                $classes = trim($cm[1]);
-                $class_list = preg_split('/\s+/', $classes, -1, PREG_SPLIT_NO_EMPTY);
-
-                if (!in_array('current', $class_list, true)) {
-                    $class_list[] = 'current';
-                }
-
-                $li_attrs = preg_replace(
-                    '#class=[\'"][^\'"]*[\'"]#',
-                    'class="' . esc_attr(implode(' ', $class_list)) . '"',
-                    $li_attrs,
-                    1
-                );
-            } else {
-                $li_attrs .= ' class="current"';
-            }
-
-            return '<li' . $li_attrs . '>' . $m[2] . '<span' . $m[3] . 'aria-current="page"' . $m[4] . '>' . $m[5] . '</span>' . $m[6] . '</li>';
-        },
-        $links_html
-    );
-
-    return $links_html;
-}
-}
+// lm_pagination_markup_compat() is in utilities/helpers.php (loaded first)
 
 // --- lm_brand_listing_item_compat: BEM + legacy markup for brand/author listings ---
 if ( ! function_exists( 'lm_brand_listing_item_compat' ) ) {
@@ -359,99 +230,8 @@ function lm_brand_listing_item_compat() {
 }
 }
 
-// --- lm_get_test_card_title: "{marque} {nom}" from ACF ---
-if ( ! function_exists( 'lm_get_test_card_title' ) ) {
-function lm_get_test_card_title(int $post_id): string
-{
-    $fallback = (string) get_the_title($post_id);
-
-    if (!function_exists('get_field')) {
-        return $fallback;
-    }
-
-    $nom = trim((string) get_field('nom', $post_id));
-
-    $marque = get_field('marque', $post_id);
-    $marque_title = '';
-
-    if (!empty($marque)) {
-        if (is_array($marque)) {
-            $first = reset($marque);
-
-            if (is_object($first) && isset($first->ID)) {
-                $marque_title = (string) get_the_title((int) $first->ID);
-            } elseif (is_numeric($first)) {
-                $marque_title = (string) get_the_title((int) $first);
-            }
-        }
-        elseif (is_object($marque) && isset($marque->ID)) {
-            $marque_title = (string) get_the_title((int) $marque->ID);
-        }
-        elseif (is_numeric($marque)) {
-            $marque_title = (string) get_the_title((int) $marque);
-        }
-    }
-
-    $title = trim(trim($marque_title) . ' ' . $nom);
-
-    return $title !== '' ? $title : $fallback;
-}
-}
-
-// --- lm_render_related_test_card: test card with badge + stars + CTA ---
-if ( ! function_exists( 'lm_render_related_test_card' ) ) {
-function lm_render_related_test_card(int $test_id): string
-{
-    if ($test_id <= 0) return '';
-
-    $permalink = get_permalink($test_id);
-    if (!$permalink) return '';
-
-    $thumb = get_the_post_thumbnail($test_id, 'thumbnail');
-    $title = get_the_title($test_id);
-
-    $terms = get_the_terms($test_id, 'categorie_test');
-    $badge = '';
-    if (!empty($terms) && !is_wp_error($terms)) {
-        $t = $terms[0];
-        $link = get_term_link($t, 'categorie_test');
-        if (!is_wp_error($link)) {
-            $badge = '<span class="post-term-item term-' . esc_attr($t->slug) . '">'
-                . '<a href="' . esc_url($link) . '">' . esc_html($t->name) . '</a>'
-                . '</span>';
-        }
-    }
-
-    $out  = '<div class="related-content__card test type-test">';
-
-    $out .= '<div class="related-content__image">';
-    $out .= '<a href="' . esc_url($permalink) . '">' . $thumb . '</a>';
-    $out .= '</div>';
-
-    $out .= '<div class="related-content__content">';
-
-    if ($badge !== '') {
-        $out .= $badge;
-    }
-
-    $out .= '<span class="related-content__card-title"><a href="' . esc_url($permalink) . '">'
-        . esc_html($title) . '</a></span>';
-
-    $note = function_exists('get_field') ? get_field('note_globale', $test_id) : '';
-    if (!empty($note) && function_exists('generate_star_rating')) {
-        $out .= '<div class="related-content__stars">' . generate_star_rating($note) . '</div>';
-    }
-
-    $bouton_affiliz = get_post_meta($test_id, 'bouton_affiliz', true);
-    if (!empty($bouton_affiliz)) {
-        $out .= '<div class="related-content__cta related-content__cta--affiliz">' . $bouton_affiliz . '</div>';
-    }
-
-    $out .= '</div></div>';
-
-    return $out;
-}
-}
+// lm_get_test_card_title() is in utilities/helpers.php (loaded first)
+// lm_render_related_test_card() is in utilities/helpers.php (loaded first)
 
 // =============================================================================
 // PAGINATION REWRITE RULES & REDIRECTS
