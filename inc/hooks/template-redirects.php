@@ -9,15 +9,16 @@
  * lm_guard_early_410, lm_guard_redirect_over_max_pagination, lm_guard_brand_unused_410)
  * are in utilities/security.php as they are foundational utilities.
  *
+ * Canonical, trailing slash, and /redacteur/ canonical hardening are handled
+ * by the labomaison-seo-core plugin (inc/rankmath.php).
+ *
  * @package Labomaison
  * @subpackage Hooks
  * @since 2.0.0
  *
  * Functions in this file:
- * - Trailing slash redirect [priority 0] (skipped if MU-plugin handles it)
  * - Marque feed redirect
  * - custom_pre_handle_404()
- * - Canonical hardening for redacteur
  *
  * Dependencies: utilities/security.php
  * Load Priority: 4
@@ -80,74 +81,6 @@ if (!function_exists('lm_seo_core_active') || !lm_seo_core_active('redirects')) 
 }
 
 // =============================================================================
-// TRAILING SLASH NORMALIZATION
-// =============================================================================
-
-/**
- * Force trailing slash on all frontend URLs
- *
- * Redirects URLs without trailing slash to their slashed versions.
- * Priority 0 to run before other redirects.
- *
- * IMPORTANT:
- * - After ajout: purge cache (Kinsta + Cloudflare) sinon tu verras encore des 200.
- *
- * @since 2.0.0
- */
-add_action('template_redirect', function () {
-
-    // Skip if MU-plugin already handles trailing slash
-    if ( function_exists( 'lm_mu_send_301' ) ) return;
-
-    // Front only + sécurité
-    if (is_admin()) return;
-    if (defined('WP_CLI') && WP_CLI) return;
-    if (defined('DOING_AJAX') && DOING_AJAX) return;
-    if (defined('DOING_CRON') && DOING_CRON) return;
-    if (defined('REST_REQUEST') && REST_REQUEST) return;
-
-    // Ne gérer que GET/HEAD (évite d'impacter POST)
-    $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
-    if (!in_array($method, ['GET', 'HEAD'], true)) return;
-
-    $uri = $_SERVER['REQUEST_URI'] ?? '/';
-    if ($uri === '/' || $uri === '') return;
-
-    $parts = parse_url($uri);
-    $path  = $parts['path'] ?? $uri;
-    $query = $parts['query'] ?? '';
-
-    // Ignore endpoints techniques
-    $skip_prefixes = [
-        '/wp-json',
-        '/wp-admin',
-        '/wp-login.php',
-        '/xmlrpc.php',
-    ];
-    foreach ($skip_prefixes as $pfx) {
-        if (strpos($path, $pfx) === 0) return;
-    }
-
-    // Ignore fichiers (extensions) + sitemaps/robots
-    if (preg_match('#\.[a-z0-9]{1,6}$#i', $path)) return; // ex: .png .js .xml ...
-    if (preg_match('#/(robots\.txt|sitemap\.xml|sitemap_index\.xml)$#i', $path)) return;
-
-    // Si déjà avec slash => ok
-    if (substr($path, -1) === '/') return;
-
-    // Cible: ajoute slash + conserve query string
-    $target = $path . '/';
-    if ($query !== '') {
-        $target .= '?' . $query;
-    }
-
-    // 301
-    wp_safe_redirect($target, 301);
-    exit;
-
-}, 0);
-
-// =============================================================================
 // 404 HANDLING
 // =============================================================================
 
@@ -186,37 +119,3 @@ if (!function_exists('lm_seo_core_active') || !lm_seo_core_active('redirects')) 
         return $false;
     }
 }
-
-// =============================================================================
-// CANONICAL URL HARDENING
-// =============================================================================
-
-/**
- * Inject canonical tag if missing on /redacteur/ pages
- *
- * Uses output buffering to add canonical link tag to head
- * if one doesn't already exist.
- *
- * @since 2.0.0
- */
-add_action('template_redirect', function () {
-    if (!lm_can_is_redacteur_scope()) return;
-
-    ob_start(function ($html) {
-
-        // Si déjà un canonical, on ne touche pas (anti-doublon)
-        if (stripos($html, 'rel="canonical"') !== false || stripos($html, "rel='canonical'") !== false) {
-            return $html;
-        }
-
-        $canonical = esc_url(lm_can_current_url_clean());
-        $tag = "<link rel=\"canonical\" href=\"{$canonical}\" />\n";
-
-        // Injecte juste avant </head>
-        if (stripos($html, '</head>') !== false) {
-            $html = str_ireplace('</head>', $tag . '</head>', $html);
-        }
-
-        return $html;
-    });
-});

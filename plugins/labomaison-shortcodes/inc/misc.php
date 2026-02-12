@@ -167,6 +167,131 @@ function display_author_featured_image()
 add_shortcode('author_featured_image', 'display_author_featured_image');
 
 // =============================================================================
+// [author_list] - Author team cards grid
+// =============================================================================
+
+/**
+ * Display author profile cards in a grid
+ *
+ * Shows author cards with photo, name, bio, and social/email icons.
+ * Defaults to the two site admins (Marco Mosca & Pierre-Jean Alzieu).
+ *
+ * Usage: [author_list] or [author_list ids="5,6"]
+ *
+ * @since 2.0.0
+ * @param array $atts Shortcode attributes
+ * @return string HTML output
+ */
+function lm_author_list_shortcode( $atts ) {
+    wp_enqueue_style('font-awesome');
+
+    $atts = shortcode_atts( array(
+        'ids' => '6,5', // Marco Mosca, Pierre-Jean Alzieu
+    ), $atts, 'author_list' );
+
+    $author_ids = array_map( 'absint', array_filter( explode( ',', $atts['ids'] ) ) );
+
+    if ( empty( $author_ids ) ) {
+        return '';
+    }
+
+    $output = '<div class="lm-authorList">';
+
+    foreach ( $author_ids as $author_id ) {
+        $user = get_userdata( $author_id );
+        if ( ! $user ) {
+            continue;
+        }
+
+        $display_name = esc_html( $user->display_name );
+        $description  = wp_kses_post( get_the_author_meta( 'description', $author_id ) );
+        $author_url   = get_author_posts_url( $author_id );
+        $email        = $user->user_email;
+
+        // Image: ACF featured_image field, fallback to Gravatar
+        $image_id  = get_user_meta( $author_id, 'featured_image', true );
+        $image_html = '';
+        if ( ! empty( $image_id ) ) {
+            $image_html = wp_get_attachment_image( (int) $image_id, 'medium', false, array(
+                'class'   => 'lm-authorCard__img',
+                'loading' => 'lazy',
+                'alt'     => $display_name,
+            ) );
+        }
+        if ( empty( $image_html ) ) {
+            $image_html = '<img class="lm-authorCard__img" src="' . esc_url( get_avatar_url( $author_id, array( 'size' => 300 ) ) ) . '" alt="' . esc_attr( $display_name ) . '" loading="lazy" />';
+        }
+
+        // Social links from user meta (standard WP + Rank Math fields)
+        $socials = array();
+
+        $linkedin = get_the_author_meta( 'linkedin', $author_id );
+        if ( empty( $linkedin ) ) {
+            $linkedin = get_user_meta( $author_id, 'linkedin', true );
+        }
+        if ( ! empty( $linkedin ) ) {
+            $socials[] = array( 'url' => $linkedin, 'icon' => 'fab fa-linkedin-in', 'label' => 'LinkedIn' );
+        }
+
+        $twitter = get_the_author_meta( 'twitter', $author_id );
+        if ( empty( $twitter ) ) {
+            $twitter = get_user_meta( $author_id, 'twitter', true );
+        }
+        if ( ! empty( $twitter ) ) {
+            $url = ( strpos( $twitter, 'http' ) === 0 ) ? $twitter : 'https://x.com/' . ltrim( $twitter, '@' );
+            $socials[] = array( 'url' => $url, 'icon' => 'fab fa-x-twitter', 'label' => 'X / Twitter' );
+        }
+
+        $facebook = get_the_author_meta( 'facebook', $author_id );
+        if ( empty( $facebook ) ) {
+            $facebook = get_user_meta( $author_id, 'facebook', true );
+        }
+        if ( ! empty( $facebook ) ) {
+            $socials[] = array( 'url' => $facebook, 'icon' => 'fab fa-facebook-f', 'label' => 'Facebook' );
+        }
+
+        $instagram = get_the_author_meta( 'instagram', $author_id );
+        if ( empty( $instagram ) ) {
+            $instagram = get_user_meta( $author_id, 'instagram', true );
+        }
+        if ( ! empty( $instagram ) ) {
+            $socials[] = array( 'url' => $instagram, 'icon' => 'fab fa-instagram', 'label' => 'Instagram' );
+        }
+
+        // Email always present
+        $socials[] = array( 'url' => 'mailto:' . antispambot( $email ), 'icon' => 'fas fa-envelope', 'label' => 'Email' );
+
+        // Build card
+        $output .= '<article class="lm-authorCard">';
+        $output .= '  <a href="' . esc_url( $author_url ) . '" class="lm-authorCard__mediaLink" aria-label="' . esc_attr( $display_name ) . '">';
+        $output .= '    <div class="lm-authorCard__media">' . $image_html . '</div>';
+        $output .= '  </a>';
+        $output .= '  <div class="lm-authorCard__body">';
+        $output .= '    <h3 class="lm-authorCard__name"><a href="' . esc_url( $author_url ) . '">' . $display_name . '</a></h3>';
+
+        if ( ! empty( $description ) ) {
+            $output .= '    <p class="lm-authorCard__bio">' . $description . '</p>';
+        }
+
+        if ( ! empty( $socials ) ) {
+            $output .= '    <div class="lm-authorCard__socials">';
+            foreach ( $socials as $s ) {
+                $output .= '<a href="' . esc_url( $s['url'] ) . '" class="lm-authorCard__socialIcon" target="_blank" rel="noopener noreferrer" aria-label="' . esc_attr( $s['label'] ) . '"><i class="' . esc_attr( $s['icon'] ) . '"></i></a>';
+            }
+            $output .= '    </div>';
+        }
+
+        $output .= '  </div>';
+        $output .= '</article>';
+    }
+
+    $output .= '</div>';
+
+    return $output;
+}
+add_shortcode( 'author_list', 'lm_author_list_shortcode' );
+
+// =============================================================================
 // [promotion_link] - Promotion archive link
 // =============================================================================
 
@@ -242,6 +367,7 @@ add_shortcode('show_acf_promotion_data', 'show_acf_promotion_data_shortcode');
 
 function custom_social_share_buttons($atts)
 {
+    wp_enqueue_style('font-awesome');
     $atts = shortcode_atts(
         array(
             'whatsapp'  => 'true',

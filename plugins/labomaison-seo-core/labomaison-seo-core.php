@@ -47,16 +47,21 @@ if ( ! function_exists( 'lm_seo_core_active' ) ) {
  * Load Rank Math integration after plugins are loaded.
  * Only loads if Rank Math is active.
  */
-add_action( 'plugins_loaded', function() {
+add_action('plugins_loaded', function () {
 
-    if ( ! class_exists( 'RankMath' ) ) {
+    if ( ! defined('RANK_MATH_VERSION') ) {
         return;
     }
 
-    // Full Rank Math integration (sitemap, variables, schema, breadcrumbs, canonical, etc.)
-    require_once LM_SEO_DIR . 'inc/rankmath.php';
+    $file = LM_SEO_DIR . 'inc/rankmath.php';
+    if ( ! file_exists($file) ) {
+        return;
+    }
 
-}, 10 );
+    require_once $file;
+
+}, 20);
+
 
 /**
  * Plugin activation

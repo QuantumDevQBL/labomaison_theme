@@ -108,3 +108,5 @@ if ( defined( 'WP_DEBUG' ) && WP_DEBUG && defined( 'LABOMAISON_DEBUG' ) && LABOM
         error_log( '[Labomaison] Theme v' . LABOMAISON_VERSION . ' initialized successfully' );
     }, 999 );
 }
+
+

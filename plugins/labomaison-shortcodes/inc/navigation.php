@@ -32,6 +32,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 if ( ! function_exists( 'generate_scrollable_menu_shortcode' ) ) {
 function generate_scrollable_menu_shortcode( $atts ) {
+  wp_enqueue_style('font-awesome');
   $atts = shortcode_atts( array(
       'menu_id' => '',
   ), $atts, 'scrollable_menu' );

@@ -439,7 +439,7 @@
   display: flex;
   column-gap: var(--gap-lg, 20px);
   row-gap: var(--gap-sm, 10px);
-  padding: var(--space-lg, 20px);
+  padding: 20px;
   border-radius: var(--radius-xl, 8px);
   box-shadow: var(--shadow-lg, 5px 5px 10px 0 rgba(0, 0, 0, 0.1));
   /* Source: L3736-3743 */

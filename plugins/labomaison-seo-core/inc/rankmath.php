@@ -19,8 +19,11 @@
  * - Breadcrumb HTML filter
  * - Author breadcrumbs
  * - Sitemap entry cleanup
- * - Canonical handlers (pagination, tracking params, marques, redacteur)
+ * - Canonical global (ONE SOURCE OF TRUTH)
+ * - Canonical hardening for /redacteur/ (ob_start fallback)
+ * - Trailing slash redirect
  * - Title/Description pagination
+ * - Noindex paginated taxonomy archives
  *
  * Dependencies: Rank Math plugin, ACF
  * Load Priority: 5
@@ -516,7 +519,6 @@ add_filter('rank_math/json_ld', function($data) {
  * @param WP_Term $term Starting term
  * @return WP_Term|null Root term or null
  */
-if ( ! function_exists( 'lm_breadcrumb_get_univers' ) ) {
 function lm_breadcrumb_get_univers(\WP_Term $term): ?\WP_Term {
     while (!empty($term->parent)) {
         $parent = get_term((int) $term->parent, $term->taxonomy);
@@ -524,7 +526,6 @@ function lm_breadcrumb_get_univers(\WP_Term $term): ?\WP_Term {
         $term = $parent;
     }
     return $term;
-}
 }
 
 /**
@@ -536,7 +537,6 @@ function lm_breadcrumb_get_univers(\WP_Term $term): ?\WP_Term {
  * @param int $post_id Post ID
  * @return WP_Term|null Primary category or null
  */
-if ( ! function_exists( 'lm_breadcrumb_pick_primary_category' ) ) {
 function lm_breadcrumb_pick_primary_category(int $post_id): ?\WP_Term {
     // Yoast primary
     $yoast = get_post_meta($post_id, '_yoast_wpseo_primary_category', true);
@@ -580,7 +580,6 @@ function lm_breadcrumb_pick_primary_category(int $post_id): ?\WP_Term {
 
     return $cats[0] ?? null;
 }
-}
 
 /**
  * Get featured test data for a post (produit_vedette ACF field)
@@ -589,7 +588,6 @@ function lm_breadcrumb_pick_primary_category(int $post_id): ?\WP_Term {
  * @param int $post_id Post ID
  * @return array|null Array with test_id, label, url or null
  */
-if ( ! function_exists( 'lm_breadcrumb_get_featured_test_data' ) ) {
 function lm_breadcrumb_get_featured_test_data(int $post_id): ?array {
     if (!function_exists('get_field')) return null;
 
@@ -647,7 +645,6 @@ function lm_breadcrumb_get_featured_test_data(int $post_id): ?array {
         'url'     => $url,
     ];
 }
-}
 
 /**
  * Map a WP category to its corresponding categorie_test term (by slug)
@@ -656,14 +653,12 @@ function lm_breadcrumb_get_featured_test_data(int $post_id): ?array {
  * @param WP_Term $cat WP category term
  * @return WP_Term|null Matching categorie_test term or null
  */
-if ( ! function_exists( 'lm_map_post_category_to_test_term' ) ) {
 function lm_map_post_category_to_test_term(\WP_Term $cat): ?\WP_Term {
     $t = get_term_by('slug', $cat->slug, 'categorie_test');
     if ($t && !is_wp_error($t) && $t instanceof \WP_Term) {
         return $t;
     }
     return null;
-}
 }
 
 // =============================================================================
@@ -1022,203 +1017,185 @@ add_filter('rank_math/sitemap/entry', function ($entry, $type, $object) {
 }, 99, 3);
 
 // =============================================================================
-// CANONICAL HANDLERS
+// CANONICAL — ONE SOURCE OF TRUTH
 // =============================================================================
 
 /**
- * Pagination canonical: self-referent for /page/N/
+ * LM Canonical Global
+ *
+ * - Canonical = URL courante propre (auto-référente)
+ * - Supprime querystring + fragment
+ * - Normalise trailing slash
+ * - Conserve /page/N/ (pagination auto-référente)
+ * - Fallback : si Rank Math renvoie vide, on force quand même un canonical
+ *
+ * Couvre: posts, pages, CPT (marque, test...), archives (cat, tag, tax),
+ *         paginations, /redacteur/, /marques/.
  *
  * @since 2.0.0
  */
-add_filter('rank_math/frontend/canonical', function ($canonical) {
+function lm_canonical_global_rankmath($canonical) {
 
-    if (!is_string($canonical) || $canonical === '') {
+    // Front uniquement
+    if (is_admin()) {
+        return $canonical;
+    }
+    if (defined('WP_CLI') && WP_CLI) {
         return $canonical;
     }
 
-    if (!is_paged()) {
+    // Base host du site
+    $home_host = (string) wp_parse_url(home_url('/'), PHP_URL_HOST);
+    if ($home_host === '') {
         return $canonical;
     }
 
-    $current = (function_exists('wp_get_canonical_url') ? wp_get_canonical_url() : '');
-
-    if (!$current) {
-        $scheme = is_ssl() ? 'https' : 'http';
-        $host   = wp_parse_url(home_url('/'), PHP_URL_HOST);
-        $path   = isset($_SERVER['REQUEST_URI']) ? (string) $_SERVER['REQUEST_URI'] : '/';
-        $current = $scheme . '://' . $host . $path;
+    // URI courante
+    $uri = isset($_SERVER['REQUEST_URI']) ? (string) $_SERVER['REQUEST_URI'] : '/';
+    if ($uri === '') {
+        $uri = '/';
     }
 
-    $current = preg_replace('/#.*/', '', $current);
-    $current = preg_replace('/\?.*/', '', $current);
-    $current = trailingslashit($current);
+    // Nettoyage : fragment + query
+    $uri = (string) preg_replace('/#.*/', '', $uri);
+    $uri = (string) preg_replace('/\?.*/', '', $uri);
 
-    if (preg_match('#/page/\d+/?$#', $current)) {
-        return $current;
-    }
+    // URL canonique cible (absolue)
+    $target = home_url($uri);
 
-    return $canonical;
-
-}, 99);
-
-/**
- * Tracking params canonical: strip tracking query params
- *
- * Detects: utm_*, gclid, fbclid, msclkid, gbraid, wbraid, yclid, dclid
- *
- * @since 2.0.0
- */
-add_filter('rank_math/frontend/canonical', function ($canonical) {
-
-    if (!is_string($canonical) || $canonical === '') {
-        return $canonical;
-    }
-
-    $current = (function_exists('wp_get_canonical_url') ? wp_get_canonical_url() : '');
-
-    if (!$current) {
-        $scheme = is_ssl() ? 'https' : 'http';
-        $host   = wp_parse_url(home_url('/'), PHP_URL_HOST);
-        $path   = isset($_SERVER['REQUEST_URI']) ? (string) $_SERVER['REQUEST_URI'] : '/';
-        $current = $scheme . '://' . $host . $path;
-    }
-
-    $current = preg_replace('/#.*/', '', $current);
-
-    $parts = wp_parse_url($current);
-    if (empty($parts['scheme']) || empty($parts['host']) || empty($parts['path'])) {
-        return $canonical;
-    }
-
-    // Host guardrail
-    $allowed_hosts = array_filter(array_unique([
-        wp_parse_url(home_url('/'), PHP_URL_HOST),
-        wp_parse_url(site_url('/'), PHP_URL_HOST),
-    ]));
-    $host_ok = false;
-    foreach ($allowed_hosts as $h) {
-        if ($h && strcasecmp($parts['host'], $h) === 0) {
-            $host_ok = true;
-            break;
-        }
-    }
-    if (!$host_ok) {
-        return $canonical;
-    }
-
-    // No query => nothing to do
-    if (empty($parts['query'])) {
-        return $canonical;
-    }
-
-    parse_str($parts['query'], $query);
-
-    if (empty($query) || !is_array($query)) {
-        return $canonical;
-    }
-
-    // Tracking detectors
-    $tracking_prefixes = ['utm_'];
-    $tracking_keys     = [
-        'gclid', 'fbclid', 'msclkid',
-        'gbraid', 'wbraid',
-        'yclid', 'dclid',
-    ];
-
-    $has_tracking = false;
-
-    foreach ($query as $k => $v) {
-        $key = strtolower((string) $k);
-
-        if (in_array($key, $tracking_keys, true)) {
-            $has_tracking = true;
-            break;
-        }
-
-        foreach ($tracking_prefixes as $p) {
-            if (strpos($key, $p) === 0) {
-                $has_tracking = true;
-                break 2;
-            }
-        }
-    }
-
-    if (!$has_tracking) {
-        return $canonical;
-    }
-
-    // Target canonical = URL without query, normalized trailing slash
-    $target = $parts['scheme'] . '://' . $parts['host'] . $parts['path'];
-    $target = preg_replace('#/+$#', '/', $target);
+    // Normalisation trailing slash
     $target = trailingslashit($target);
 
+    // Guardrail : ne renvoie que si host conforme
+    $parts = wp_parse_url($target);
+    if (empty($parts['host']) || strcasecmp((string) $parts['host'], $home_host) !== 0) {
+        return $canonical;
+    }
+
     return $target;
+}
 
-}, 99);
+add_filter('rank_math/frontend/canonical', 'lm_canonical_global_rankmath', 9999);
+
+// =============================================================================
+// CANONICAL HARDENING — GLOBAL FALLBACK
+// =============================================================================
 
 /**
- * Marques canonical: self-referent for /marques/ URLs
+ * Safety net: if no canonical tag exists in <head>, inject one.
+ * Covers all frontend pages — handles edge cases where Rank Math
+ * doesn't output a canonical (e.g. homepage, custom templates).
+ *
+ * Anti-doublon: only injects if no rel="canonical" already present.
  *
  * @since 2.0.0
  */
-add_filter('rank_math/frontend/canonical', function ($canonical) {
+add_action('template_redirect', function () {
 
-    if (!is_string($canonical) || $canonical === '') {
-        return $canonical;
-    }
+    // Front only
+    if (is_admin()) return;
+    if (defined('DOING_AJAX') && DOING_AJAX) return;
+    if (defined('DOING_CRON') && DOING_CRON) return;
+    if (defined('REST_REQUEST') && REST_REQUEST) return;
 
-    $uri = isset($_SERVER['REQUEST_URI']) ? (string) $_SERVER['REQUEST_URI'] : '';
-    if ($uri === '' || stripos($uri, '/marques/') !== 0) {
-        return $canonical;
-    }
+    ob_start(function ($html) {
 
-    $current = (function_exists('wp_get_canonical_url') ? wp_get_canonical_url() : '');
+        // Si déjà un canonical, on ne touche pas (anti-doublon)
+        if (stripos($html, 'rel="canonical"') !== false || stripos($html, "rel='canonical'") !== false) {
+            return $html;
+        }
 
-    if (!$current) {
-        $scheme = is_ssl() ? 'https' : 'http';
-        $host   = wp_parse_url(home_url('/'), PHP_URL_HOST);
-        $current = $scheme . '://' . $host . $uri;
-    }
+        // Build canonical URL (same logic as lm_canonical_global_rankmath)
+        $home_host = (string) wp_parse_url(home_url('/'), PHP_URL_HOST);
+        if ($home_host === '') return $html;
 
-    $current = preg_replace('/#.*/', '', $current);
-    $current = preg_replace('/\?.*/', '', $current);
+        $uri = isset($_SERVER['REQUEST_URI']) ? (string) $_SERVER['REQUEST_URI'] : '/';
+        $uri = (string) preg_replace('/#.*/', '', $uri);
+        $uri = (string) preg_replace('/\?.*/', '', $uri);
 
-    // Host guardrail
-    $allowed_hosts = array_filter(array_unique([
-        wp_parse_url(home_url('/'), PHP_URL_HOST),
-        wp_parse_url(site_url('/'), PHP_URL_HOST),
-    ]));
-    $parts = wp_parse_url($current);
-    if (empty($parts['host']) || !in_array($parts['host'], $allowed_hosts, true)) {
-        return $canonical;
-    }
+        $canonical = trailingslashit(home_url($uri));
 
-    $current = trailingslashit($current);
+        // Host guardrail
+        $parts = wp_parse_url($canonical);
+        if (empty($parts['host']) || strcasecmp((string) $parts['host'], $home_host) !== 0) {
+            return $html;
+        }
 
-    // Only force if still within /marques/
-    if (!preg_match('#^https?://[^/]+/marques/#i', $current)) {
-        return $canonical;
-    }
+        $canonical = esc_url($canonical);
+        $tag = "<link rel=\"canonical\" href=\"{$canonical}\" />\n";
 
-    return $current;
+        // Injection juste avant </head>
+        if (stripos($html, '</head>') !== false) {
+            return preg_replace('~</head>~i', $tag . '</head>', $html, 1);
+        }
 
-}, 99);
+        return $html;
+    });
+}, 0);
+
+// =============================================================================
+// TRAILING SLASH REDIRECT
+// =============================================================================
 
 /**
- * Redacteur canonical: normalize for /redacteur/ URLs
+ * Force trailing slash on all frontend URLs (301 redirect)
  *
- * Note: lm_can_is_redacteur_scope() and lm_can_current_url_clean()
- * are defined in utilities/security.php
+ * Skipped if MU-plugin already handles it (lm_mu_send_301).
  *
  * @since 2.0.0
  */
-add_filter('rank_math/frontend/canonical', function ($canonical) {
-    if ( ! function_exists( 'lm_can_is_redacteur_scope' ) || ! function_exists( 'lm_can_current_url_clean' ) ) {
-        return $canonical;
+add_action('template_redirect', function () {
+
+    // Skip if MU-plugin already handles trailing slash
+    if ( function_exists( 'lm_mu_send_301' ) ) return;
+
+    // Front only
+    if (is_admin()) return;
+    if (defined('WP_CLI') && WP_CLI) return;
+    if (defined('DOING_AJAX') && DOING_AJAX) return;
+    if (defined('DOING_CRON') && DOING_CRON) return;
+    if (defined('REST_REQUEST') && REST_REQUEST) return;
+
+    // GET/HEAD only
+    $method = $_SERVER['REQUEST_METHOD'] ?? 'GET';
+    if (!in_array($method, ['GET', 'HEAD'], true)) return;
+
+    $uri = $_SERVER['REQUEST_URI'] ?? '/';
+    if ($uri === '/' || $uri === '') return;
+
+    $parts = parse_url($uri);
+    $path  = $parts['path'] ?? $uri;
+    $query = $parts['query'] ?? '';
+
+    // Skip technical endpoints
+    $skip_prefixes = [
+        '/wp-json',
+        '/wp-admin',
+        '/wp-login.php',
+        '/xmlrpc.php',
+    ];
+    foreach ($skip_prefixes as $pfx) {
+        if (strpos($path, $pfx) === 0) return;
     }
-    if (!lm_can_is_redacteur_scope()) return $canonical;
-    return lm_can_current_url_clean();
-}, 99);
+
+    // Skip files (extensions) + sitemaps/robots
+    if (preg_match('#\.[a-z0-9]{1,6}$#i', $path)) return;
+    if (preg_match('#/(robots\.txt|sitemap\.xml|sitemap_index\.xml)$#i', $path)) return;
+
+    // Already has trailing slash => ok
+    if (substr($path, -1) === '/') return;
+
+    // Target: add slash + preserve query string
+    $target = $path . '/';
+    if ($query !== '') {
+        $target .= '?' . $query;
+    }
+
+    // 301
+    wp_safe_redirect($target, 301);
+    exit;
+
+}, 0);
 
 // =============================================================================
 // TITLE & DESCRIPTION PAGINATION
@@ -1299,4 +1276,44 @@ add_filter('rank_math/frontend/description', function ($description) {
 
     return $description . ' – Page ' . $p;
 
+}, 99);
+
+// =============================================================================
+// NOINDEX PAGINATED TAXONOMY ARCHIVES
+// =============================================================================
+
+/**
+ * Noindex paginated archives for comparaison taxonomies
+ *
+ * Taxonomies: categorie_test, etiquette-test
+ * Rule: if paged >= 2 then robots = noindex,follow
+ *
+ * @since 2.0.0
+ */
+add_filter('rank_math/frontend/robots', function ($robots) {
+
+    if (is_admin()) {
+        return $robots;
+    }
+
+    $paged = max(1, (int) get_query_var('paged'));
+    if ($paged < 2) {
+        return $robots;
+    }
+
+    if (!is_tax(['categorie_test', 'etiquette-test'])) {
+        return $robots;
+    }
+
+    if (!is_array($robots)) {
+        $robots = [];
+    }
+
+    $robots = array_diff($robots, ['index', 'noindex']);
+    $robots[] = 'noindex';
+
+    $robots = array_diff($robots, ['nofollow']);
+    $robots[] = 'follow';
+
+    return array_values(array_unique($robots));
 }, 99);

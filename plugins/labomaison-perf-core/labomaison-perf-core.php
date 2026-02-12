@@ -15,7 +15,7 @@
  *    - inc/integrations/wprocket.php → inc/wprocket.php
  *    - inc/integrations/litespeed.php → inc/litespeed.php
  *    - inc/integrations/affilizz.php → inc/affilizz.php
- *    - add_image_dimensions() from content-filtersf.php → inc/image-dimensions.php
+ *    - add_image_dimensions() from content-filters.php → inc/image-dimensions.php
  *    - force_lazy_load_images() from theme-support.php → inc/lazy-loading.php
  *    - WPSP delay logic from theme-support.php → inc/plugin-load-order.php
  * 3. Activate the plugin
@@ -56,6 +56,14 @@ require_once LM_PERF_DIR . 'inc/plugin-load-order.php';
 
 if ( defined( 'WP_ROCKET_VERSION' ) ) {
     require_once LM_PERF_DIR . 'inc/wprocket.php';
+}
+
+// LiteSpeed: load only if plugin active AND file exists
+if ( defined( 'LSCWP_V' ) ) {
+    $lm_litespeed_file = LM_PERF_DIR . 'inc/litespeed.php';
+    if ( file_exists( $lm_litespeed_file ) ) {
+        require_once $lm_litespeed_file;
+    }
 }
 
 // Affilizz: safe even without plugin (uses is_singular() guard inside)
