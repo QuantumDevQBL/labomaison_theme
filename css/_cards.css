@@ -1007,3 +1007,257 @@
   color: #fff;
 }
 
+/* ========================================
+   BUYING GUIDES OVERLAY
+   ======================================== */
+
+#content .buying-guides .related-content__card > .related-content__image:after {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 97%;
+  background: #000;
+  right: 0;
+  left: 0;
+  opacity: .2;
+  top: 0;
+}
+
+/* ========================================
+   QUERY LOOP IMAGE (img inside container)
+   ======================================== */
+
+.query_loop_image img {
+  height: 150px;
+  object-fit: cover;
+  border-radius: 4px;
+}
+
+@media screen and (max-width: 768px) {
+  .query_loop_image img {
+    height: 104px;
+  }
+}
+
+/* ========================================
+   RELATED CONTENT TWEAKS
+   ======================================== */
+
+.related-content__cta.related-content__cta--affiliz {
+  width: fit-content;
+}
+
+.related-content__stars {
+  width: fit-content;
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+
+.card__content,
+.related-articles__content,
+.related-content__content {
+  position: relative;
+}
+
+.card__image img,
+.related-articles__image img,
+.related-content__image img {
+  border-radius: 8px;
+  height: 150px;
+  width: 150px;
+  object-fit: cover;
+}
+
+.related-content.related-articles .post-term-item {
+  display: block;
+}
+
+/* ========================================
+   LM-CARD COMPONENT
+   ======================================== */
+
+.lm-card {
+  max-width: 620px;
+}
+
+.lm-card-link {
+  min-height: 150px;
+  display: flex;
+  flex-direction: row;
+  text-decoration: none;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow:
+    rgba(0, 0, 0, 0.1) 0 10px 15px -3px,
+    rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
+  background: #fff;
+}
+
+.lm-card-media {
+  flex: 0 0 33%;
+  overflow: hidden;
+}
+
+.lm-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.lm-card-content {
+  flex: 1;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  justify-content: center;
+}
+
+.lm-card-title {
+  margin: 0;
+  font-size: 1.1rem;
+  font-weight: 600;
+  color: var(--contrast);
+}
+
+.lm-card-excerpt {
+  margin: 0;
+  font-size: 0.95rem;
+  line-height: 1.2;
+  font-weight: 400;
+  color: var(--contrast);
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ========================================
+   LM-TEST-CARD
+   ======================================== */
+
+.lm-test-card {
+  flex-basis: 30%;
+  min-width: 300px;
+  position: relative;
+  border-radius: 8px;
+}
+
+.lm-test-card-rating {
+  position: absolute;
+  top: 0;
+  right: 5px;
+  display: flex;
+  min-height: 20px;
+  height: 20px;
+  width: 100px;
+}
+
+.lm-test-card-link {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  display: block;
+}
+
+.lm-test-card-inner {
+  background: #2b2e34;
+  background-size: cover;
+  padding: 40px 20px;
+  border-radius: 8px;
+  height: 100%;
+  position: relative;
+}
+
+.lm-test-card-media {
+  width: 100%;
+  height: 250px;
+}
+
+.lm-test-card-media picture {
+  width: 250px;
+  height: 250px;
+}
+
+.lm-test-card-media img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 8px;
+}
+
+.lm-test-card-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.lm-test-card-content * {
+  color: #fff;
+}
+
+.lm-test-card-stars .note-globale {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 1;
+}
+
+.lm-test-card-excerpt {
+  line-height: 1.45;
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 5;
+  z-index: 1;
+}
+
+.lm-test-card-title {
+  display: block;
+  font-size: .9rem;
+  line-height: inherit;
+  position: relative;
+  margin-top: 10px;
+  margin-bottom: 5px;
+  color: #fff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 100%;
+}
+
+.lm-test-card-title a {
+  color: #fff;
+}
+
+.lm-test-card-cta {
+  display: flex;
+  justify-content: center;
+}
+
+.lm-rating-stars {
+  height: 20px;
+}
+
+.lm-star.is-empty {
+  width: 20px;
+  height: 20px;
+  font-size: 20px;
+}
+
+/* éléments au-dessus de l'overlay (cliquables) */
+.lm-test-card-media-link,
+.lm-test-card-title-link,
+.lm-test-card-cta,
+.affilizz-container {
+  position: relative;
+  z-index: 2;
+}
+
+@media screen and (max-width: 768px) {
+  .lm-test-card {
+    flex-basis: 100%;
+  }
+}
+

@@ -445,6 +445,139 @@
   /* Source: L3736-3743 */
 }
 
-/* Pagination, popular-brands, mixed-list, article-card rules
-   removed — canonical versions live in _layout.css and _cards.css */
+/* ========================================
+   LM-TERMS-GRID
+   ======================================== */
+
+.lm-terms-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+/* ========================================
+   LM-TESTS-GRID
+   ======================================== */
+
+.lm-tests-grid {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+/* ========================================
+   LM-PAGINATION
+   ======================================== */
+
+.lm-pagination-list {
+  margin: 2rem 0;
+  padding: 0;
+  list-style: none;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+}
+
+.lm-pagination-item {
+  display: block;
+}
+
+.lm-pagination-item a,
+.lm-pagination-item span {
+  display: block;
+  padding: 8px 12px;
+  line-height: 1.7;
+  background: #f1f1f1;
+  color: #333;
+  text-decoration: none;
+  border-radius: 5px;
+  font-weight: 500;
+  transition: background-color 150ms ease, color 150ms ease;
+}
+
+.lm-pagination-item a:hover {
+  background: #ddd;
+  color: #000;
+}
+
+.lm-pagination-item.is-active a,
+.lm-pagination-item.is-active span {
+  background: #000;
+  color: #fff;
+  font-weight: 600;
+  cursor: default;
+}
+
+.lm-pagination-item .dots {
+  background: transparent;
+  padding: 8px 6px;
+}
+
+/* Next: "»" */
+.lm-pagination-item .next.page-numbers {
+  position: relative;
+  width: 36px;
+  min-width: 36px;
+  padding: 8px 0;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-indent: 9999px;
+}
+
+.lm-pagination-item .next.page-numbers span[aria-hidden="true"] {
+  display: none;
+}
+
+.lm-pagination-item .next.page-numbers::after {
+  content: "»";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-indent: 0;
+  font-size: 16px;
+  line-height: 1.7em;
+  color: #333;
+}
+
+.lm-pagination-item .next.page-numbers:hover::after {
+  color: #000;
+}
+
+/* Prev: "«" */
+.lm-pagination-item .prev.page-numbers {
+  position: relative;
+  width: 36px;
+  min-width: 36px;
+  padding: 8px 0;
+  text-align: center;
+  overflow: hidden;
+  white-space: nowrap;
+  text-indent: 9999px;
+}
+
+.lm-pagination-item .prev.page-numbers span[aria-hidden="true"] {
+  display: none;
+}
+
+.lm-pagination-item .prev.page-numbers::after {
+  content: "«";
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-indent: 0;
+  font-size: 16px;
+  line-height: 1.7em;
+  color: #333;
+}
+
+.lm-pagination-item .prev.page-numbers:hover::after {
+  color: #000;
+}
 

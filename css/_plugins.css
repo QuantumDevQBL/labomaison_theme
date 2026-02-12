@@ -531,3 +531,34 @@
   }
 }
 
+/* ========================================
+   CLIC2SHOP — ANTI-CLS
+   ======================================== */
+
+.c2s-widget.is-loading {
+  display: block;
+  overflow: hidden;
+  contain: layout paint;
+  min-height: 900px;
+}
+
+@media (max-width: 768px) {
+  .c2s-widget.is-loading {
+    min-height: 1400px;
+  }
+}
+
+.c2s-widget.is-ready {
+  min-height: 0 !important;
+  overflow: visible;
+  contain: initial;
+}
+
+/* Micro-CLS: logos opérateurs */
+.m-offer__img img {
+  width: 80px;
+  height: 80px;
+  object-fit: contain;
+  display: block;
+}
+
