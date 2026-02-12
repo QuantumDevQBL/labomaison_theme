@@ -22,6 +22,12 @@
  * Load Priority: 1 (Must load first)
  * Risk Level: CRITICAL
  *
+ * NOTE: If the MU-plugin mu-plugins/lm-early-guards.php is active,
+ * the URL-pattern guards (lm_guard_early_410, trailing slash) already
+ * ran before this file loads. The function_exists() guards prevent
+ * double execution. The DB-dependent guards (pagination, brand 410)
+ * can only run here since they need WP_Query.
+ *
  * Migrated from: functions.php L1669-1861, L3243-3262
  */
 

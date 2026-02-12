@@ -36,15 +36,181 @@ if ( ! defined( 'ABSPATH' ) ) {
     exit;
 }
 
-// If the shortcodes plugin already loaded these helpers, skip entirely
-if ( function_exists( 'generate_star_rating' ) ) {
-    return;
+// =============================================================================
+// STAR RATING GENERATION
+// =============================================================================
+
+/**
+ * Generate star rating HTML with SVG
+ *
+ * Creates a visual 5-star rating display using SVG gradients
+ * for partial star fills.
+ *
+ * @since 2.0.0
+ * @param float|string $note_globale The rating value (0-5)
+ * @return string HTML output for star rating
+ */
+function generate_star_rating($note_globale) {
+    if (empty($note_globale)) return '';
+
+    $note_globale = is_numeric($note_globale) ? floatval($note_globale) : 0.0;
+    $unique_id = uniqid('star_');
+
+    $output = "<div class='note-globale'><div class='etoiles-container'>";
+    for ($i = 1; $i <= 5; $i++) {
+        $fill = $note_globale >= $i ? 100 : ($note_globale > $i - 1 ? ($note_globale - floor($note_globale)) * 100 : 0);
+        // ajoute l'unique au gradient ID
+        $grad_id = "grad-{$unique_id}-{$i}";
+        $output .= "<svg width='20' height='20' viewBox='0 0 50 50' class='etoile'>
+            <defs>
+                <linearGradient id='{$grad_id}'>
+                    <stop offset='{$fill}%' stop-color='gold'/>
+                    <stop offset='{$fill}%' stop-color='gray'/>
+                </linearGradient>
+            </defs>
+            <polygon points='25,1 32,19 50,19 35,30 40,48 25,37 10,48 15,30 0,19 18,19' fill='url(#{$grad_id})'/>
+        </svg>";
+    }
+    $output .= "</div></div>";
+    return $output;
 }
 
+// =============================================================================
+// CARD GENERATION FUNCTIONS
+// =============================================================================
 
+/**
+ * Generate card HTML for post or taxonomy term
+ *
+ * @since 2.0.0
+ * @param WP_Post|WP_Term $post_or_term Post object or term object
+ * @param bool $is_category Whether the item is a category/term
+ * @return string HTML output for the card
+ */
+function generate_card_html($post_or_term, $is_category = false) {
+    if ($is_category) {
+        // $post_or_term est un WP_Term
+        $term_id = isset($post_or_term->term_id) ? (int) $post_or_term->term_id : 0;
 
+        $permalink = get_term_link($post_or_term, 'categorie_test');
 
+        // IMPORTANT : pour ACF sur taxonomie, il faut passer "taxonomy_termId"
+        $acf_ref = $term_id ? ('categorie_test_' . $term_id) : $post_or_term;
 
+        $title = get_field('titre', $acf_ref);
+        $featured_image_id = get_field('featured', $acf_ref);
+        $thumbnail_url = $featured_image_id ? wp_get_attachment_image_url($featured_image_id, 'medium') : '';
+        $content = isset($post_or_term->description) ? wp_trim_words($post_or_term->description, 10) : '';
+        $date = ''; // pas de date fiable pour un terme
+    } else {
+        $permalink = get_permalink($post_or_term->ID);
+        $title = get_the_title($post_or_term->ID);
+        $thumbnail_url = get_the_post_thumbnail_url($post_or_term->ID, 'medium');
+        $content = wp_trim_words(get_the_content(null, false, $post_or_term->ID), 10);
+        $date = get_the_date('d/m/Y \à H:i', $post_or_term->ID);
+    }
+
+    $output = '<div class="related-content__card">';
+    $output .= '<div class="related-content__image">';
+    $output .= '<img src="' . esc_url($thumbnail_url) . '" alt="' . esc_attr($title) . '">';
+    $output .= '</div>';
+    $output .= '<div class="related-content__content">';
+    $output .= '<span class="related-content__card-title"><a href="' . esc_url($permalink) . '">' . esc_html($title) . '</a></span>';
+    //$output .= '<p class="related-content__excerpt">' . esc_html($content) . '</p>';
+    if ($date) {
+        $output .= '<span class="related-content__date">Publié le ' . esc_html($date) . '</span>';
+    }
+    $output .= '</div>';
+    $output .= '</div>';
+
+    return $output;
+}
+
+/**
+ * Generate content card HTML
+ *
+ * Utility function for generating content cards with category badges.
+ *
+ * @since 2.0.0
+ * @param string $image_html Image HTML
+ * @param string $title Card title
+ * @param string $link Card permalink
+ * @param string $date Optional publication date
+ * @param string $category_name Optional category name
+ * @param string $category_link Optional category link
+ * @param string $category_class Optional category CSS class
+ * @return string HTML output for the card
+ */
+function generate_content_card($image_html, $title, $link, $date = '', $category_name = '', $category_link = '', $category_class = '') {
+    $output = '<div class="related-content__card">';
+
+    if ($image_html) {
+        $output .= '<div class="related-content__image">';
+        $output .= '<a href="' . esc_url($link) . '">' . $image_html . '</a>';
+        $output .= '</div>';
+    }
+
+    $output .= '<div class="related-content__content">';
+
+    // Afficher la catégorie au-dessus du titre
+    if ($category_name && $category_link && $category_class) {
+        $output .= '<span class="post-term-item ' . esc_attr($category_class) . '">';
+        $output .= '<a href="' . esc_url($category_link) . '" data-original-text="' . esc_attr($category_name) . '" style="display: -webkit-box; -webkit-line-clamp: 1; -moz-box-orient: vertical; overflow: hidden; line-height: 1.5; max-height: 1.5em; word-break: break-word; text-overflow: ellipsis;">';
+        $output .= esc_html($category_name);
+        $output .= '</a></span>';
+    }
+
+    $output .= '<span class="related-content__card-title"><a href="' . esc_url($link) . '">' . esc_html($title) . '</a></span>';
+
+    if ($date) {
+        $output .= '<span class="related-content__date">Publié le ' . esc_html($date) . '</span>';
+    }
+
+    $output .= '</div>';
+    $output .= '</div>';
+
+    return $output;
+}
+
+/**
+ * Generate product card HTML (WooCommerce)
+ *
+ * @since 2.0.0
+ * @return string HTML output for the product card
+ */
+function generate_product_card() {
+    $product = wc_get_product(get_the_ID());
+    if (!$product) return '';
+
+    $image = $product->get_image('medium');
+    $name = $product->get_name();
+    $price = $product->get_price_html();
+    $link = get_permalink();
+
+    $output = '<div class="related-content__card">';
+    $output .= '<div class="related-content__image">';
+    $output .= '<a href="' . esc_url($link) . '">' . $image . '</a>';
+    $output .= '</div>';
+    $output .= '<div class="related-content__content">';
+    $output .= '<span class="related-content__card-title"><a href="' . esc_url($link) . '">' . esc_html($name) . '</a></span>';
+    $output .= '<p class="related-content__price">' . $price . '</p>';
+    $output .= '</div>';
+    $output .= '</div>';
+    return $output;
+}
+
+/**
+ * Generate custom content card (wrapper for generate_content_card)
+ *
+ * @since 2.0.0
+ * @param string $image_html Image HTML
+ * @param string $title Card title
+ * @param string $link Card permalink
+ * @return string HTML output for the card
+ */
+function generate_content_card_custom($image_html, $title, $link) {
+    return generate_content_card($image_html, $title, $link);
+}
 
 // =============================================================================
 // POST ITEM RENDERING

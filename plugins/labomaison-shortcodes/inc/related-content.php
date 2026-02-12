@@ -1062,3 +1062,39 @@ function display_buying_guides_and_comparisons($atts) {
     return $output;
 }
 add_shortcode('buying_guides_and_comparisons', 'display_buying_guides_and_comparisons');
+
+// =============================================================================
+// [display_linked_info] - Combined info for search result thumbnails
+// =============================================================================
+
+/**
+ * Display linked category info for search query loop blocks.
+ * Used by render_block filter (query_loop_headline_search_thumbnail).
+ *
+ * @since 2.0.1
+ */
+function display_linked_info_shortcode( $atts ) {
+    global $post;
+    $atts = shortcode_atts( [ 'post_id' => $post ? $post->ID : null ], $atts );
+    $post_id = intval( $atts['post_id'] );
+
+    if ( ! $post_id ) {
+        return '';
+    }
+
+    $output = '';
+
+    // Show category badge
+    $category_html = do_shortcode( '[linked_test_category post_id="' . $post_id . '"]' );
+    if ( $category_html ) {
+        $output .= $category_html;
+    }
+
+    // Show post thumbnail if available
+    if ( has_post_thumbnail( $post_id ) ) {
+        $output .= get_the_post_thumbnail( $post_id, 'medium', [ 'loading' => 'lazy' ] );
+    }
+
+    return $output;
+}
+add_shortcode( 'display_linked_info', 'display_linked_info_shortcode' );

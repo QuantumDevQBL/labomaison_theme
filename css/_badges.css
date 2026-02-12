@@ -240,11 +240,7 @@
   /* Source: L1470-1479 */
 }
 
-/* Hide term in related articles */
-.related-content.related-articles .post-term-item {
-  display: none;
-  /* Source: L175-177 */
-}
+
 
 /* Taxonomy archive - visibility hidden instead of display none */
 .tax-categorie_test .related-content.related-articles .post-term-item {

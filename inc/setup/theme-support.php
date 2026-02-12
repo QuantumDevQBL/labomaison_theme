@@ -47,25 +47,17 @@ add_action('init', 'wpse325327_add_excerpts_to_pages');
 // =============================================================================
 
 /**
- * Enable lazy loading for all images
+ * Lazy loading — skip if perf plugin handles this
  */
-add_filter('wp_lazy_loading_enabled', '__return_true');
+if ( ! function_exists( 'lm_perf_core_active' ) ) {
+    add_filter('wp_lazy_loading_enabled', '__return_true');
 
-/**
- * Force lazy load for images that don't have it
- *
- * Adds loading="lazy" to img tags that are missing the attribute.
- *
- * @since 2.0.0
- * @param string $content Post content
- * @return string Modified content
- */
-function force_lazy_load_images($content) {
-    // Ajoute loading="lazy" aux balises img sans cet attribut
-    $content = preg_replace('/<img(?![^>]+loading=["\'](?:lazy|eager|auto)["\'])([^>]+)>/', '<img loading="lazy" $1>', $content);
-    return $content;
+    function force_lazy_load_images($content) {
+        $content = preg_replace('/<img(?![^>]+loading=["\'](?:lazy|eager|auto)["\'])([^>]+)>/', '<img loading="lazy" $1>', $content);
+        return $content;
+    }
+    add_filter('the_content', 'force_lazy_load_images');
 }
-add_filter('the_content', 'force_lazy_load_images');
 
 // =============================================================================
 // COMMENTS DISABLE
@@ -156,25 +148,24 @@ add_filter('gettext', function($text) {
 // =============================================================================
 
 /**
- * Delay plugin initialization to avoid conflicts
- *
- * Moves WPSP and Affilizz initialization from plugins_loaded to init
- * to prevent potential conflicts.
+ * Plugin load order fixes — skip if perf plugin handles this
  */
-add_action('plugins_loaded', function() {
-    if (class_exists('WPSP_PRO')) {
-        remove_action('plugins_loaded', ['WPSP_PRO', 'init'], 10);
-        add_action('init', ['WPSP_PRO', 'init']);
-    }
+if ( ! function_exists( 'lm_perf_core_active' ) ) {
+    add_action('plugins_loaded', function() {
+        if (class_exists('WPSP_PRO')) {
+            remove_action('plugins_loaded', ['WPSP_PRO', 'init'], 10);
+            add_action('init', ['WPSP_PRO', 'init']);
+        }
 
-    if (class_exists('WPSP')) {
-        remove_action('plugins_loaded', ['WPSP', 'init'], 10);
-        add_action('init', ['WPSP', 'init']);
-    }
+        if (class_exists('WPSP')) {
+            remove_action('plugins_loaded', ['WPSP', 'init'], 10);
+            add_action('init', ['WPSP', 'init']);
+        }
 
-    if (class_exists('Affilizz\Core')) {
-        $affilizz_core = Affilizz\Core::get_instance();
-        remove_action('plugins_loaded', [$affilizz_core, 'init'], 10);
-        add_action('init', [$affilizz_core, 'init']);
-    }
-});
+        if (class_exists('Affilizz\Core')) {
+            $affilizz_core = Affilizz\Core::get_instance();
+            remove_action('plugins_loaded', [$affilizz_core, 'init'], 10);
+            add_action('init', [$affilizz_core, 'init']);
+        }
+    });
+}

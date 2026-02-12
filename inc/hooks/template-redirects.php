@@ -14,7 +14,7 @@
  * @since 2.0.0
  *
  * Functions in this file:
- * - Trailing slash redirect [priority 0]
+ * - Trailing slash redirect [priority 0] (skipped if MU-plugin handles it)
  * - Marque feed redirect
  * - custom_pre_handle_404()
  * - Canonical hardening for redacteur
@@ -95,6 +95,9 @@ if (!function_exists('lm_seo_core_active') || !lm_seo_core_active('redirects')) 
  * @since 2.0.0
  */
 add_action('template_redirect', function () {
+
+    // Skip if MU-plugin already handles trailing slash
+    if ( function_exists( 'lm_mu_send_301' ) ) return;
 
     // Front only + sécurité
     if (is_admin()) return;
@@ -187,18 +190,6 @@ if (!function_exists('lm_seo_core_active') || !lm_seo_core_active('redirects')) 
 // =============================================================================
 // CANONICAL URL HARDENING
 // =============================================================================
-
-/**
- * Normalize canonical URL for Rank Math on /redacteur/ pages
- *
- * Ensures proper canonical URLs on author pages under /redacteur/.
- *
- * @since 2.0.0
- */
-add_filter('rank_math/frontend/canonical', function ($canonical) {
-    if (!lm_can_is_redacteur_scope()) return $canonical;
-    return lm_can_current_url_clean();
-}, 99);
 
 /**
  * Inject canonical tag if missing on /redacteur/ pages

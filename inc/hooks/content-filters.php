@@ -42,6 +42,8 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return string Modified content
  */
 function add_image_dimensions($content) {
+    // Skip if perf plugin handles this
+    if ( function_exists( 'lm_perf_core_active' ) ) return $content;
     // Ajouter automatiquement des dimensions aux images
     $content = preg_replace_callback('/<img (.*?)src=["\'](.*?)["\'](.*?)>/', function($matches) {
         $attrs = $matches[1] . $matches[3];
@@ -81,6 +83,8 @@ add_filter('the_content', 'add_image_dimensions');
  * @return string Modified content
  */
 function add_dimensions_to_affilizz_images($content) {
+    // Skip if perf plugin handles this
+    if ( function_exists( 'lm_perf_core_active' ) ) return $content;
     $content = preg_replace_callback('/<img(.*?)class=["\']affilizz-icon["\'](.*?)src=["\'](.*?)["\'](.*?)>/', function($matches) {
         $attrs = $matches[1] . $matches[4];
 
@@ -127,6 +131,35 @@ add_filter('render_block', function ($block_content, $block) {
 }, 10, 2);
 
 // =============================================================================
+// SHOW POST DATE ON BLOCKS
+// =============================================================================
+
+/**
+ * Show post dates on blocks with 'show-post-date' class
+ *
+ * Displays publish or modified date on blocks that have the
+ * 'show-post-date' CSS class (used in query loops).
+ *
+ * @since 2.0.1
+ */
+add_filter('render_block', function($block_content, $block) {
+    if ( strpos( $block['attrs']['className'] ?? '', 'show-post-date' ) !== false ) {
+        $post_id       = get_the_ID();
+        $publish_date  = get_the_date( 'd/m/Y \à H:i', $post_id );
+        $modified_date = get_the_modified_date( 'd/m/Y \à H:i', $post_id );
+
+        if ( $publish_date === $modified_date ) {
+            $date_content = "<span class='datetime'>Publié le " . esc_html( $publish_date ) . "</span>";
+        } else {
+            $date_content = "<span class='datetime'>Mis à jour le " . esc_html( $modified_date ) . "</span>";
+        }
+
+        $block_content = $date_content . $block_content;
+    }
+    return $block_content;
+}, 10, 2);
+
+// =============================================================================
 // GENERATEPRESS ARCHIVE FILTERS
 // =============================================================================
 
@@ -138,7 +171,6 @@ add_filter('render_block', function ($block_content, $block) {
  * @since 2.0.0
  */
 add_filter('generate_archive_title', function ($title) {
-
     if (is_category() || is_tag()) {
         $term_id = get_queried_object_id(); // Récupérer l'ID de la catégorie ou de l'étiquette actuelle
         $chapeau = get_field('chapeau', 'category_' . $term_id); // Pour les catégories
@@ -165,7 +197,6 @@ add_filter('generate_archive_title', function ($title) {
  * @since 2.0.0
  */
 add_filter('generate_after_loop', function ($title) {
-
     if (is_category() || is_tag()) {
         $term_id = get_queried_object_id(); // Récupérer l'ID de la catégorie ou de l'étiquette actuelle
         $contenu = get_field('contenu', 'category_' . $term_id); // Pour les catégories
