@@ -516,6 +516,7 @@ add_filter('rank_math/json_ld', function($data) {
  * @param WP_Term $term Starting term
  * @return WP_Term|null Root term or null
  */
+if ( ! function_exists( 'lm_breadcrumb_get_univers' ) ) {
 function lm_breadcrumb_get_univers(\WP_Term $term): ?\WP_Term {
     while (!empty($term->parent)) {
         $parent = get_term((int) $term->parent, $term->taxonomy);
@@ -523,6 +524,7 @@ function lm_breadcrumb_get_univers(\WP_Term $term): ?\WP_Term {
         $term = $parent;
     }
     return $term;
+}
 }
 
 /**
@@ -534,6 +536,7 @@ function lm_breadcrumb_get_univers(\WP_Term $term): ?\WP_Term {
  * @param int $post_id Post ID
  * @return WP_Term|null Primary category or null
  */
+if ( ! function_exists( 'lm_breadcrumb_pick_primary_category' ) ) {
 function lm_breadcrumb_pick_primary_category(int $post_id): ?\WP_Term {
     // Yoast primary
     $yoast = get_post_meta($post_id, '_yoast_wpseo_primary_category', true);
@@ -577,6 +580,7 @@ function lm_breadcrumb_pick_primary_category(int $post_id): ?\WP_Term {
 
     return $cats[0] ?? null;
 }
+}
 
 /**
  * Get featured test data for a post (produit_vedette ACF field)
@@ -585,6 +589,7 @@ function lm_breadcrumb_pick_primary_category(int $post_id): ?\WP_Term {
  * @param int $post_id Post ID
  * @return array|null Array with test_id, label, url or null
  */
+if ( ! function_exists( 'lm_breadcrumb_get_featured_test_data' ) ) {
 function lm_breadcrumb_get_featured_test_data(int $post_id): ?array {
     if (!function_exists('get_field')) return null;
 
@@ -642,6 +647,7 @@ function lm_breadcrumb_get_featured_test_data(int $post_id): ?array {
         'url'     => $url,
     ];
 }
+}
 
 /**
  * Map a WP category to its corresponding categorie_test term (by slug)
@@ -650,12 +656,14 @@ function lm_breadcrumb_get_featured_test_data(int $post_id): ?array {
  * @param WP_Term $cat WP category term
  * @return WP_Term|null Matching categorie_test term or null
  */
+if ( ! function_exists( 'lm_map_post_category_to_test_term' ) ) {
 function lm_map_post_category_to_test_term(\WP_Term $cat): ?\WP_Term {
     $t = get_term_by('slug', $cat->slug, 'categorie_test');
     if ($t && !is_wp_error($t) && $t instanceof \WP_Term) {
         return $t;
     }
     return null;
+}
 }
 
 // =============================================================================
@@ -1205,6 +1213,9 @@ add_filter('rank_math/frontend/canonical', function ($canonical) {
  * @since 2.0.0
  */
 add_filter('rank_math/frontend/canonical', function ($canonical) {
+    if ( ! function_exists( 'lm_can_is_redacteur_scope' ) || ! function_exists( 'lm_can_current_url_clean' ) ) {
+        return $canonical;
+    }
     if (!lm_can_is_redacteur_scope()) return $canonical;
     return lm_can_current_url_clean();
 }, 99);
