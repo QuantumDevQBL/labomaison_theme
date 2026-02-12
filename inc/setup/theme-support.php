@@ -69,9 +69,13 @@ if ( ! function_exists( 'lm_perf_core_active' ) ) {
  * Closes comments and pings for all content types.
  */
 add_action('init', function() {
-    // Fermer les commentaires pour les articles et les pages
-    update_option('default_comment_status', 'closed');
-    update_option('default_ping_status', 'closed');
+    // Fermer les commentaires (écriture DB uniquement si la valeur diffère)
+    if ( get_option('default_comment_status') !== 'closed' ) {
+        update_option('default_comment_status', 'closed');
+    }
+    if ( get_option('default_ping_status') !== 'closed' ) {
+        update_option('default_ping_status', 'closed');
+    }
 
     // Supprimer les commentaires des types de publication
     remove_post_type_support('post', 'comments');

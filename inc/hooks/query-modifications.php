@@ -43,35 +43,38 @@ if ( ! defined( 'ABSPATH' ) ) {
 function adjust_main_query_based_on_ratings($query)
 {
     if (!is_admin() && $query->is_main_query() && (is_tax('categorie_test') || is_tax('etiquette_test'))) {
-        // Premièrement, déterminons si des posts avec une note_globale > 0 existent dans cette taxonomie
-        $has_rated_posts = false; // Supposez initialement qu'il n'y a pas de posts avec note > 0
+        $term_id = get_queried_object_id();
+        $cache_key = 'lm_has_rated_' . $term_id;
+        $has_rated_posts = get_transient($cache_key);
 
-        $rated_posts_query = new WP_Query(array(
-            'post_type' => 'test', // Assurez-vous que c'est le bon type de post
-            'tax_query' => array(
-                array(
-                    'taxonomy' => 'categorie_test',
-                    'field'    => 'term_id',
-                    'terms'    => get_queried_object_id(),
+        if ( $has_rated_posts === false ) {
+            $rated_posts_query = new WP_Query(array(
+                'post_type'      => 'test',
+                'no_found_rows'  => true,
+                'fields'         => 'ids',
+                'tax_query'      => array(
+                    array(
+                        'taxonomy' => 'categorie_test',
+                        'field'    => 'term_id',
+                        'terms'    => $term_id,
+                    ),
                 ),
-            ),
-            'meta_query' => array(
-                array(
-                    'key'     => 'note_globale',
-                    'value'   => 0,
-                    'compare' => '>',
-                    'type'    => 'NUMERIC',
+                'meta_query'     => array(
+                    array(
+                        'key'     => 'note_globale',
+                        'value'   => 0,
+                        'compare' => '>',
+                        'type'    => 'NUMERIC',
+                    ),
                 ),
-            ),
-            'posts_per_page' => 1,
-        ));
+                'posts_per_page' => 1,
+            ));
 
-        if ($rated_posts_query->have_posts()) {
-            $has_rated_posts = true;
+            $has_rated_posts = $rated_posts_query->have_posts() ? 'yes' : 'no';
+            set_transient($cache_key, $has_rated_posts, HOUR_IN_SECONDS);
         }
 
-        // Si des posts avec une note_globale > 0 existent, on ajuste la requête principale pour trier par note_globale d'abord
-        if ($has_rated_posts) {
+        if ($has_rated_posts === 'yes') {
             $query->set('meta_key', 'note_globale');
             $query->set('orderby', 'meta_value_num');
             $query->set('order', 'DESC');

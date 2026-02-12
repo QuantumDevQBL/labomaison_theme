@@ -84,7 +84,7 @@ function lm_enqueue_ga4_head() {
         'https://www.googletagmanager.com/gtag/js?id=GT-NMCXXG3R',
         array(),
         null,
-        false // Dans le <head>
+        array( 'strategy' => 'async', 'in_footer' => false )
     );
 
     // 2) Configuration principale avec gestion intelligente du consentement
@@ -300,7 +300,7 @@ add_action('wp_enqueue_scripts', 'lm_enqueue_ga4_head', 20);
  *
  * @since 2.0.0
  */
-add_action('wp_head', function() {
+add_action('wp_footer', function() {
     ?>
     <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-7727728964402200"
         crossorigin="anonymous"></script>

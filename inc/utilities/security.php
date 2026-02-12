@@ -243,36 +243,42 @@ if (!function_exists('lm_guard_brand_unused_410')) {
         }
 
         $marque_id = (int) $marque_post->ID;
-        $meta_like = '"' . $marque_id . '"';
+        $cache_key = 'lm_brand_used_' . $marque_id;
+        $has_any   = get_transient($cache_key);
 
-        $q_tests = new WP_Query([
-            'post_type'      => 'test',
-            'posts_per_page' => 1,
-            'no_found_rows'  => true,
-            'fields'         => 'ids',
-            'meta_query'     => [[
-                'key'     => 'marque',
-                'value'   => $meta_like,
-                'compare' => 'LIKE',
-            ]],
-        ]);
+        if ( $has_any === false ) {
+            $meta_like = '"' . $marque_id . '"';
 
-        $q_posts = new WP_Query([
-            'post_type'      => 'post',
-            'posts_per_page' => 1,
-            'no_found_rows'  => true,
-            'fields'         => 'ids',
-            'meta_query'     => [[
-                'key'     => 'marque',
-                'value'   => $meta_like,
-                'compare' => 'LIKE',
-            ]],
-        ]);
+            $q_tests = new WP_Query([
+                'post_type'      => 'test',
+                'posts_per_page' => 1,
+                'no_found_rows'  => true,
+                'fields'         => 'ids',
+                'meta_query'     => [[
+                    'key'     => 'marque',
+                    'value'   => $meta_like,
+                    'compare' => 'LIKE',
+                ]],
+            ]);
 
-        $has_any = ($q_tests->have_posts() || $q_posts->have_posts());
-        wp_reset_postdata();
+            $q_posts = new WP_Query([
+                'post_type'      => 'post',
+                'posts_per_page' => 1,
+                'no_found_rows'  => true,
+                'fields'         => 'ids',
+                'meta_query'     => [[
+                    'key'     => 'marque',
+                    'value'   => $meta_like,
+                    'compare' => 'LIKE',
+                ]],
+            ]);
 
-        if (!$has_any) {
+            $has_any = ($q_tests->have_posts() || $q_posts->have_posts()) ? 'yes' : 'no';
+            wp_reset_postdata();
+            set_transient($cache_key, $has_any, 12 * HOUR_IN_SECONDS);
+        }
+
+        if ($has_any !== 'yes') {
             lm_guard_send_410('brand_unused_410');
         }
     }

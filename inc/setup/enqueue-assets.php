@@ -58,7 +58,13 @@ add_action('wp_head', 'enqueue_instagram_embed_script');
  * @return void
  */
 function load_acf_scripts() {
-    acf_form_head(); // Assurez-vous que cela ne cause pas de problèmes de performance ou de fonctionnement
+    if ( ! function_exists('acf_form_head') ) {
+        return;
+    }
+    global $post;
+    if ( $post && ( has_shortcode($post->post_content, 'acf_form') || is_page_template('template-acf-form.php') ) ) {
+        acf_form_head();
+    }
 }
 add_action('wp_head', 'load_acf_scripts');
 
